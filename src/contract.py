@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Tuple
-from pydantic import BaseModel, EmailStr, validate_call, PositiveFloat, PositiveInt
+from pydantic import BaseModel, EmailStr, PositiveFloat, PositiveInt
 from enum import Enum
 
 # Define os produtos como um Enum para garantir a consistência e legibilidade
@@ -15,39 +15,17 @@ class Produto(str, Enum):
 
 class Vendas(BaseModel):
     """
-    Modelo Pydantic para representar uma venda.
-    """
-    email: EmailStr
-    """
-    Email do cliente.
-    """
-    data: datetime
-    """
-    Data da venda.
-    """
-    valor: PositiveFloat
-    """
-    Valor total da venda.
-    """
-    quantidade: PositiveInt
-    """
-    Quantidade de produtos vendidos.
-    """
-    produto: Produto
-    """
-    Produto vendido.
-    """
+    Modelo de dados para as vendas.
 
-@validate_call('produto')
-def categoria_produto(cls, v):
-    """
-    Valida a categoria do produto.
-    
     Args:
-        cls: Classe do modelo.
-        v: Valor da categoria do produto.
-    
-    Returns:
-        O valor da categoria do produto.
-    """
-    return v
+        email (EmailStr): email do comprador
+        data (datetime): data da compra
+        valor (PositiveFloat): valor da compra
+        quantidade (PositiveInt): quantidade de produtos
+        produto (Produto): categoria do produto
+    """    
+    email: EmailStr
+    data: datetime
+    valor: PositiveFloat
+    quantidade: PositiveInt
+    produto: Produto    
