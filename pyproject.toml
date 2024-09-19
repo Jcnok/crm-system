@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "ntt-data-engenharia-de-dados-com-python"
+name = "crm-system"
 version = "0.1.0"
-description = ""
+description = "Pipeline de dados completo para um CRM de vendas, utilizando ferramentas como Python, SQL, dbt, OpenAI e Langchain."
 authors = ["Julio Okuda <julio.okuda@gmail.com>"]
 license = "MIT"
 readme = "README.md"
