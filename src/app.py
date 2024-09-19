@@ -1,4 +1,8 @@
 import streamlit as st 
+from contract import Vendas
+from datetime import datetime
+from pydantic import ValidationError
+
 
 def main():   
   st.title("CRM System")
@@ -11,14 +15,17 @@ def main():
   produto = st.selectbox("Escolha o produto vendido", ["Produto 1", "Produto 2", "Produto 3"])
   
   if st.button("Salvar"):
+    try:
+    data_hora = datetime.combine(data, hora)
+    venda = Vendas(email=email
+                  , data=data_hora
+                  , valor=valor
+                  , quantidade=quantidade
+                  , produto=produto)
     st.success("Venda salva com sucesso!")
+    except:
     data_hora = f"{data} {hora}"
-    st.write("Email do vendedor:", email)
-    st.write("Data-Hora da venda:", data_hora)
-    st.write("Valor da venda:", valor)
-    st.write("Quantidade de produtos vendidos:", quantidade)
-    st.write("Produto vendido:", produto)
-
+      
 
 if __name__ == "__main__":
   main()
