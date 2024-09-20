@@ -13,6 +13,10 @@ pydantic = {extras = ["email"], version = "^2.9.2"}
 sqlalchemy = "^2.0.35"
 psycopg2-binary = "^2.9.9"
 python-dotenv = "^1.0.1"
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.5.35"
+mkdocstrings = "^0.26.1"
+mkdocstrings-python = "^1.11.1"
 
 
 [tool.poetry.group.dev.dependencies]
