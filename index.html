@@ -261,6 +261,24 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#database.salvar_no_postgres_em_lote" class="md-nav__link">
+    <span class="md-ellipsis">
+      salvar_no_postgres_em_lote
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database.delete_all_sales_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      delete_all_sales_data
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -317,6 +335,24 @@
   <a href="#database.criar_tabela_vendas" class="md-nav__link">
     <span class="md-ellipsis">
       criar_tabela_vendas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database.salvar_no_postgres_em_lote" class="md-nav__link">
+    <span class="md-ellipsis">
+      salvar_no_postgres_em_lote
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database.delete_all_sales_data" class="md-nav__link">
+    <span class="md-ellipsis">
+      delete_all_sales_data
     </span>
   </a>
   
@@ -506,7 +542,8 @@
 
             <details class="quote">
               <summary>Source code in <code>src/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
+<span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
@@ -535,8 +572,7 @@
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
-<span class="normal">84</span>
-<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres</span><span class="p">(</span><span class="n">dados</span><span class="p">:</span> <span class="n">Vendas</span><span class="p">):</span>
+<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres</span><span class="p">(</span><span class="n">dados</span><span class="p">:</span> <span class="n">Vendas</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Salva os dados validados no PostgreSQL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -564,9 +600,9 @@
         <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">st</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&quot;Dados salvos com sucesso no banco de dados!&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dados salvos com sucesso no banco de dados!&quot;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">st</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erro ao salvar no banco de dados: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erro ao salvar no banco de dados: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -613,8 +649,7 @@
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">criar_tabela_vendas</span><span class="p">():</span>
+<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">criar_tabela_vendas</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cria a tabela de vendas no PostgreSQL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -642,9 +677,154 @@
         <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
         <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="c1"># st.success(&quot;Tabela de vendas criada com sucesso!&quot;)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">st</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erro ao criar a tabela de vendas: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erro ao criar a tabela de vendas: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="database.salvar_no_postgres_em_lote"></a>
+    <div class="doc doc-contents first">
+
+        <p>Salva uma lista de objetos Vendas no PostgreSQL em um único lote.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/database.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres_em_lote</span><span class="p">(</span><span class="n">vendas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vendas</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Salva uma lista de objetos Vendas no PostgreSQL em um único lote.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Conecta ao banco de dados</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">DB_HOST</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">DB_NAME</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">DB_USER</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">DB_PASS</span>
+        <span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="c1"># Prepara os valores para inserção em lote</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span>
+                <span class="n">venda</span><span class="o">.</span><span class="n">email</span><span class="p">,</span>
+                <span class="n">venda</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="n">venda</span><span class="o">.</span><span class="n">valor</span><span class="p">,</span>
+                <span class="n">venda</span><span class="o">.</span><span class="n">quantidade</span><span class="p">,</span>
+                <span class="n">venda</span><span class="o">.</span><span class="n">produto</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">venda</span> <span class="ow">in</span> <span class="n">vendas</span>
+        <span class="p">]</span>
+
+        <span class="c1"># Insere os dados na tabela de vendas em lote</span>
+        <span class="n">insert_query</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">SQL</span><span class="p">(</span>
+            <span class="s2">&quot;INSERT INTO vendas (email, data, valor, quantidade, produto) VALUES </span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">execute_values</span><span class="p">(</span><span class="n">cursor</span><span class="p">,</span> <span class="n">insert_query</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erro ao salvar no banco de dados: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="database.delete_all_sales_data"></a>
+    <div class="doc doc-contents first">
+
+        <p>Deleta todos os dados da tabela de vendas no PostgreSQL.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/database.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">delete_all_sales_data</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deleta todos os dados da tabela de vendas no PostgreSQL.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Conecta ao banco de dados</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="n">host</span><span class="o">=</span><span class="n">DB_HOST</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="n">DB_NAME</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">DB_USER</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">DB_PASS</span>
+        <span class="p">)</span>
+        <span class="n">cursor</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+        <span class="c1"># Deleta todos os dados da tabela de vendas</span>
+        <span class="n">delete_query</span> <span class="o">=</span> <span class="n">sql</span><span class="o">.</span><span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;DELETE FROM vendas&quot;</span><span class="p">)</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">delete_query</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="n">cursor</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Erro ao deletar os dados do banco de dados: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
