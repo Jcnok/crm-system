@@ -12,9 +12,9 @@ class Produto(str, Enum):
     Enum para representar os produtos disponíveis.
     """
 
-    produto1 = "Produto 1"
-    produto2 = "Produto 2"
-    produto3 = "Produto 3"
+    produto1 = "Product A"
+    produto2 = "Product B"
+    produto3 = "Product C"
 
 
 class Vendas(BaseModel):
