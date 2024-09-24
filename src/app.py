@@ -1,10 +1,16 @@
-import os
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 import streamlit as st
 from pydantic import ValidationError
-from contract import Vendas, Produto
-from database import salvar_no_postgres, salvar_no_postgres_em_lote, delete_all_sales_data
+
+from contract import Produto, Vendas
+from database import (
+    delete_all_sales_data,
+    salvar_no_postgres,
+    salvar_no_postgres_em_lote,
+)
+
 
 def main():
     st.title("CRM System")
@@ -35,8 +41,13 @@ def main():
         except ValidationError as e:
             st.error(f"Erro de validação: {e}")
 
-# Adiciona a funcionalidade de importar dados de arquivo CSV
+    # Adiciona a funcionalidade de importar dados de arquivo CSV
     st.subheader("Importar dados de vendas (arquivo CSV)")
+    st.markdown(
+        """Copie o link e cole em 'Browse files' para usar o arquivo de exemplo:
+           https://raw.githubusercontent.com/Jcnok/crm-system/refs/heads/master/data/sales_data.csv
+        """
+    )
     st.write("O arquivo CSV deve estar no seguinte formato:")
     st.markdown(
         """
@@ -52,22 +63,25 @@ def main():
         try:
             # Carrega os dados do arquivo CSV
             sales_data = pd.read_csv(uploaded_file)
-            
+
             # Converte as colunas para o formato esperado
-            sales_data['data'] = pd.to_datetime(sales_data['data'])
-            sales_data['valor'] = sales_data['valor'].astype(float)
-            sales_data['quantidade'] = sales_data['quantidade'].astype(int)
-            sales_data['produto'] = sales_data['produto'].apply(lambda x: Produto(x))
-            
+            sales_data["data"] = pd.to_datetime(sales_data["data"])
+            sales_data["valor"] = sales_data["valor"].astype(float)
+            sales_data["quantidade"] = sales_data["quantidade"].astype(int)
+            sales_data["produto"] = sales_data["produto"].apply(lambda x: Produto(x))
+
             # Cria uma lista de objetos Vendas a partir dos dados do CSV
-            vendas = [Vendas(
-                email=row["email"],
-                data=row["data"],
-                valor=row["valor"],
-                quantidade=row["quantidade"],
-                produto=row["produto"],
-            ) for _, row in sales_data.iterrows()]
-            
+            vendas = [
+                Vendas(
+                    email=row["email"],
+                    data=row["data"],
+                    valor=row["valor"],
+                    quantidade=row["quantidade"],
+                    produto=row["produto"],
+                )
+                for _, row in sales_data.iterrows()
+            ]
+
             # Salva os dados em lote no banco de dados
             if salvar_no_postgres_em_lote(vendas):
                 st.success("Dados importados do CSV com sucesso!")
@@ -77,12 +91,13 @@ def main():
             st.error(f"Erro ao importar dados do CSV: {e}")
 
     # Botão para deletar todos os dados do banco de dados
-    st.subheader(f"Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)")
+    st.subheader("Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)")
     if st.button("Deletar todos os dados"):
         if delete_all_sales_data():
             st.success("Todos os dados foram deletados do banco de dados.", icon="🔥")
         else:
             st.error("Erro ao deletar os dados do banco de dados.")
+
 
 if __name__ == "__main__":
     main()
