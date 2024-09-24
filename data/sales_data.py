@@ -1,13 +1,20 @@
-# Generate 200 fake sales data samples
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 from faker import Faker
 from enum import Enum
 
+# Definição dos produtos
 class Product(Enum):
     PRODUCT_A = "Product A"
     PRODUCT_B = "Product B"
     PRODUCT_C = "Product C"
+
+# Dicionário para mapear o valor correto para cada produto
+product_prices = {
+    Product.PRODUCT_A: 350,
+    Product.PRODUCT_B: 499,
+    Product.PRODUCT_C: 899
+}
 
 fake = Faker()
 
@@ -15,9 +22,11 @@ data = []
 for _ in range(200):
     email = fake.email()
     data_venda = fake.date_time_between(start_date='-1y', end_date='now')
-    valor = fake.pyfloat(min_value=10, max_value=1000, right_digits=2)
     quantidade = fake.random_int(min=1, max=20)
-    produto = fake.random_element(Product)
+    produto = fake.random_element(Product)  # Seleciona o produto aleatoriamente
+    valor = product_prices[produto]  # Atribui o valor correspondente ao produto
+    
+    # Adiciona os dados à lista
     data.append({
         'email': email,
         'data': data_venda,
@@ -26,7 +35,10 @@ for _ in range(200):
         'produto': produto.value
     })
 
+# Cria um DataFrame com os dados de vendas
 sales_df = pd.DataFrame(data)
 
-# Save the data to a CSV file
+# Salva os dados em um arquivo CSV
 sales_df.to_csv('data/sales_data.csv', index=False)
+
+print("Arquivo CSV gerado com sucesso!")
