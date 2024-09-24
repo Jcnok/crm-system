@@ -1,8 +1,10 @@
 import os
+
 import psycopg2
-from psycopg2.extras import execute_values
-from psycopg2 import sql
 from dotenv import load_dotenv
+from psycopg2 import sql
+from psycopg2.extras import execute_values
+
 from contract import Vendas
 
 # Carregar variáveis do arquivo .env
@@ -13,6 +15,7 @@ DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
+
 
 # Função para criar a tabela de vendas no PostgreSQL
 def criar_tabela_vendas():
@@ -45,7 +48,8 @@ def criar_tabela_vendas():
         conn.close()
     except Exception as e:
         raise Exception(f"Erro ao criar a tabela de vendas: {e}")
-    
+
+
 # Função para salvar os dados validados no PostgreSQL
 def salvar_no_postgres(dados: Vendas):
     """
@@ -77,7 +81,8 @@ def salvar_no_postgres(dados: Vendas):
         conn.close()
         print("Dados salvos com sucesso no banco de dados!")
     except Exception as e:
-        raise Exception(f"Erro ao salvar no banco de dados: {e}")    
+        raise Exception(f"Erro ao salvar no banco de dados: {e}")
+
 
 # Função para salvar os dados validados no PostgreSQL em lote
 def salvar_no_postgres_em_lote(vendas: list[Vendas]):
@@ -92,13 +97,16 @@ def salvar_no_postgres_em_lote(vendas: list[Vendas]):
         cursor = conn.cursor()
 
         # Prepara os valores para inserção em lote
-        values = [(
-            venda.email,
-            venda.data,
-            venda.valor,
-            venda.quantidade,
-            venda.produto.value
-        ) for venda in vendas]
+        values = [
+            (
+                venda.email,
+                venda.data,
+                venda.valor,
+                venda.quantidade,
+                venda.produto.value,
+            )
+            for venda in vendas
+        ]
 
         # Insere os dados na tabela de vendas em lote
         insert_query = sql.SQL(
@@ -113,6 +121,7 @@ def salvar_no_postgres_em_lote(vendas: list[Vendas]):
     except Exception as e:
         raise Exception(f"Erro ao salvar no banco de dados: {e}")
         return False
+
 
 def delete_all_sales_data():
     """
@@ -135,4 +144,6 @@ def delete_all_sales_data():
         return True
     except Exception as e:
         return False, f"Erro ao deletar os dados do banco de dados: {e}"
+
+
 criar_tabela_vendas()
