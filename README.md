@@ -22,13 +22,7 @@ graph TD
     F --> M(app.py);
     F --> N(contract.py);
     F --> O(database.py);
-    G --> P(test_example.py);
-    
-    style C fill:#141314,stroke:#e8e005,stroke-width:2px
-    style D fill:#141314,stroke:#e8e005,stroke-width:2px
-    style E fill:#141314,stroke:#e8e005,stroke-width:2px
-    style F fill:#141314,stroke:#e8e005,stroke-width:2px
-    style G fill:#141314,stroke:#e8e005,stroke-width:2px
+    G --> P(test_example.py);       
 ```
 
 
