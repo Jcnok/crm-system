@@ -24,11 +24,11 @@ graph TD
     F --> O(database.py);
     G --> P(test_example.py);
     
-    style C fill:#14149c,stroke:#ffffff,stroke-width:2px
-    style D fill:#14149c,stroke:#ffffff,stroke-width:2px
-    style E fill:#14149c,stroke:#ffffff,stroke-width:2px
-    style F fill:#14149c,stroke:#ffffff,stroke-width:2px
-    style G fill:#14149c,stroke:#ffffff,stroke-width:2px
+    style C fill:#141314,stroke:#e8e005,stroke-width:2px
+    style D fill:#141314,stroke:#e8e005,stroke-width:2px
+    style E fill:#141314,stroke:#e8e005,stroke-width:2px
+    style F fill:#141314,stroke:#e8e005,stroke-width:2px
+    style G fill:#141314,stroke:#e8e005,stroke-width:2px
 ```
 
 
