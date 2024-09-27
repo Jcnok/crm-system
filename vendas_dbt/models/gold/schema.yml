@@ -1,0 +1,193 @@
+version: 2
+
+models:
+  - name: total_revenue
+    description: 'KPI: Faturamento Total - Calcula a soma do valor total de todas as vendas.'
+    columns:
+      - name: total_revenue
+        description: 'Valor total do faturamento.'
+        tests:
+          - not_null
+
+  - name: total_sales
+    description: 'KPI: Número Total de Vendas - Calcula a quantidade total de vendas realizadas.'
+    columns:
+      - name: total_sales
+        description: 'Quantidade total de vendas.'
+        tests:
+          - not_null
+
+  - name: average_sale_value
+    description: 'KPI: Valor Médio da Venda - Calcula o valor médio das vendas.'
+    columns:
+      - name: average_sale_value
+        description: 'Valor médio de cada venda.'
+        tests:
+          - not_null
+
+  - name: average_products_per_sale
+    description: 'KPI: Quantidade Média de Produtos por Venda - Calcula a quantidade média de produtos vendidos por venda.'
+    columns:
+      - name: average_products_per_sale
+        description: 'Quantidade média de produtos por venda.'
+        tests:
+          - not_null
+
+  - name: average_ticket
+    description: 'KPI: Ticket Médio - Calcula o valor médio das compras realizadas pelos clientes.'
+    columns:
+      - name: average_ticket
+        description: 'Valor médio do ticket de compra.'
+        tests:
+          - not_null
+
+  - name: best_selling_product_value
+    description: 'KPI: Produto Mais Vendido (em Valor) - Encontra o produto que gerou o maior valor de vendas.'
+    columns:
+      - name: produto
+        description: 'Nome do produto mais vendido em valor.'
+        tests:
+          - not_null
+      - name: total_product_revenue
+        description: 'Valor total das vendas do produto mais vendido.'
+        tests:
+          - not_null
+
+  - name: best_selling_product_quantity
+    description: 'KPI: Produto Mais Vendido (em Quantidade) - Encontra o produto com maior quantidade de unidades vendidas.'
+    columns:
+      - name: produto
+        description: 'Nome do produto mais vendido em quantidade.'
+        tests:
+          - not_null
+      - name: total_product_quantity
+        description: 'Quantidade total de produtos vendidos.'
+        tests:
+          - not_null
+
+  - name: product_revenue
+    description: 'KPI: Receita por Produto - Calcula o faturamento total gerado por cada produto.'
+    columns:
+      - name: produto
+        description: 'Nome do produto.'
+        tests:
+          - not_null
+      - name: product_revenue
+        description: 'Valor total da receita do produto.'
+        tests:
+          - not_null
+
+  - name: top_salesperson_value
+    description: 'KPI: Vendedor com Mais Vendas (em Valor) - Encontra o vendedor que gerou o maior valor de vendas.'
+    columns:
+      - name: email
+        description: 'Email do vendedor que mais vendeu em valor.'
+        tests:
+          - not_null
+      - name: salesperson_total_revenue
+        description: 'Valor total das vendas do vendedor.'
+        tests:
+          - not_null
+
+  - name: top_salesperson_quantity
+    description: 'KPI: Vendedor com Mais Vendas (em Quantidade) - Encontra o vendedor com maior número de vendas.'
+    columns:
+      - name: email
+        description: 'Email do vendedor que mais vendeu em quantidade.'
+        tests:
+          - not_null
+      - name: salesperson_total_sales
+        description: 'Quantidade total de vendas do vendedor.'
+        tests:
+          - not_null
+
+  - name: sales_per_salesperson
+    description: 'KPI: Número de Vendas por Vendedor - Calcula a quantidade de vendas realizadas por cada vendedor.'
+    columns:
+      - name: email
+        description: 'Email do vendedor.'
+        tests:
+          - not_null
+      - name: sales_per_salesperson
+        description: 'Quantidade total de vendas do vendedor.'
+        tests:
+          - not_null
+  - name: revenue_per_salesperson
+    description: 'KPI: Faturamento por Vendedor - Calcula o valor total de vendas gerado por cada vendedor.'
+    columns:
+      - name: email
+        description: 'Email do vendedor.'
+        tests:
+          - not_null
+      - name: revenue_per_salesperson
+        description: 'Valor total das vendas do vendedor.'
+        tests:
+          - not_null
+  - name: sales_per_day
+    description: 'KPI: Vendas por Dia - Calcula o número de vendas realizadas em cada dia.'
+    columns:
+      - name: sales_date
+        description: 'Data da venda.'
+        tests:
+          - not_null
+      - name: sales_per_day
+        description: 'Quantidade de vendas na data.'
+        tests:
+          - not_null
+  - name: sales_per_month
+    description: 'KPI: Vendas por Mês - Calcula o número de vendas realizadas em cada mês.'
+    columns:
+      - name: sales_month
+        description: 'Mês da venda.'
+        tests:
+          - not_null
+      - name: sales_per_month
+        description: 'Quantidade de vendas no mês.'
+        tests:
+          - not_null
+  - name: sales_per_year
+    description: 'KPI: Vendas por Ano - Calcula o número de vendas realizadas em cada ano.'
+    columns:
+      - name: sales_year
+        description: 'Ano da venda.'
+        tests:
+          - not_null
+      - name: sales_per_year
+        description: 'Quantidade de vendas no ano.'
+        tests:
+          - not_null
+  - name: revenue_per_day
+    description: 'KPI: Faturamento por Dia - Calcula o faturamento total gerado em cada dia.'
+    columns:
+      - name: revenue_date
+        description: 'Data da venda.'
+        tests:
+          - not_null
+      - name: revenue_per_day
+        description: 'Valor total do faturamento na data.'
+        tests:
+          - not_null
+
+  - name: revenue_per_month
+    description: 'KPI: Faturamento por Mês - Calcula o faturamento total gerado em cada mês.'
+    columns:
+      - name: revenue_month
+        description: 'Mês da venda.'
+        tests:
+          - not_null
+      - name: revenue_per_month
+        description: 'Valor total do faturamento no mês.'
+        tests:
+          - not_null
+
+  - name: revenue_per_year
+    description: 'KPI: Faturamento por Ano - Calcula o faturamento total gerado em cada ano.'
+    columns:
+      - name: revenue_year
+        description: 'Ano da venda.'
+        tests:
+          - not_null
+      - name: revenue_per_year
+        description: 'Valor total do faturamento no ano.'
+        tests:
+          - not_null
