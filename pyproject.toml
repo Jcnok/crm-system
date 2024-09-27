@@ -28,6 +28,8 @@ flake8 = "^7.1.1"
 taskipy = "^1.13.0"
 pytest = "^8.3.3"
 faker = "^29.0.0"
+dbt-core = "^1.8.7"
+dbt-postgres = "^1.8.2"
 
 [build-system]
 requires = ["poetry-core"]
