@@ -15,6 +15,7 @@ graph TD
     B --> E(docs);
     B --> F(src);
     B --> G(tests);
+    B --> Q(vendas_dbt);
     C --> H(python-ci.yml);
     D --> I(sales_data.csv);
     D --> J(sales_data.py);
