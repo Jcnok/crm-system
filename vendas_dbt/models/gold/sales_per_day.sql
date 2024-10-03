@@ -10,3 +10,5 @@ FROM
     {{ ref('silver_vendas') }}
 GROUP BY
     sales_date
+ORDER BY
+    sales_date ASC

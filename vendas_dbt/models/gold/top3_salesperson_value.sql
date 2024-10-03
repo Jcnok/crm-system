@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
--- KPI: Vendedor com Mais Vendas (em Valor)
--- Encontra o vendedor que gerou o maior valor de vendas.
+-- KPI: os 3 Vendedores com Mais Vendas (em Valor)
+-- Encontra os 3 melhores vendedores que geraram os maiores valores de vendas.
 
 SELECT
     email,
@@ -12,4 +12,4 @@ GROUP BY
     email
 ORDER BY
     salesperson_total_revenue DESC
-LIMIT 1
+LIMIT 3
