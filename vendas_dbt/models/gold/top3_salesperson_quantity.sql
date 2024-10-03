@@ -1,7 +1,7 @@
 {{ config(materialized='view') }}
 
--- KPI: Vendedor com Mais Vendas (em Quantidade)
--- Encontra o vendedor com maior número de vendas.
+-- KPI: Os 3 Vendedore com Mais Vendas (em Quantidade)
+-- Encontra o 3 vendedores com maior número de vendas.
 
 SELECT
     email,
@@ -12,4 +12,4 @@ GROUP BY
     email
 ORDER BY
     salesperson_total_sales DESC
-LIMIT 1
+LIMIT 3

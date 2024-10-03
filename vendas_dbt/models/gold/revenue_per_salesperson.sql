@@ -10,3 +10,5 @@ FROM
     {{ ref('silver_vendas') }}
 GROUP BY
     email
+ORDER BY
+    revenue_per_salesperson DESC
