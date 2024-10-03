@@ -18,6 +18,9 @@ mkdocs-material = "^9.5.35"
 mkdocstrings = "^0.26.1"
 mkdocstrings-python = "^1.11.1"
 briefer = "^0.0.13"
+plotly-express = "^0.4.1"
+fastapi = "^0.115.0"
+uvicorn = "^0.31.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -46,3 +49,4 @@ exclude = ".venv"
 # lib para automatizar tarefas
 [tool.taskipy.tasks]
 format = "isort .&&black .&&flake8" #verifica a formatação do código na sequência.
+kill = "kill -9 $(lsof -t -i :5000)"
