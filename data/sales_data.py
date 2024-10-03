@@ -20,9 +20,11 @@ product_prices = {
 
 fake = Faker()
 
+# Cria uma lista com 10 emails de vendedores únicos
+sellers_emails = [fake.email(domain="nihontec.com") for _ in range(10)]
 data = []
 for _ in range(200):
-    email = fake.email()
+    email = fake.random_element(sellers_emails)  # Escolhe um email aleatório da lista
     data_venda = fake.date_time_between(start_date="-1y", end_date="now")
     quantidade = fake.random_int(min=1, max=20)
     produto = fake.random_element(Product)  # Seleciona o produto aleatoriamente
