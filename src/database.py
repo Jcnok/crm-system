@@ -147,7 +147,7 @@ def delete_all_sales_data():
     
 # Função para obter dados da API
 def obter_dados_api(endpoint):
-    url = f"http://localhost:5000/{endpoint}"  # Endereço da sua API
+    url = f"https://jcnok-test1.hf.space/{endpoint}"  # Endereço da sua API
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
