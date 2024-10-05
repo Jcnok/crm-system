@@ -21,6 +21,8 @@ briefer = "^0.0.13"
 plotly-express = "^0.4.1"
 fastapi = "^0.115.0"
 uvicorn = "^0.31.0"
+langchain = "^0.3.2"
+langchain-community = "^0.3.1"
 
 
 [tool.poetry.group.dev.dependencies]
