@@ -233,7 +233,7 @@ def st_llm():
 def main():
     st.sidebar.title("Navegação")
     page = st.sidebar.radio(
-        "Ir para", ["Entrada de Dados", "Dashboard", "Apagar Dados"]
+        "Ir para", ["Entrada de Dados", "Dashboard", "Chat com SQL", "Apagar Dados"]
     )
 
     if page == "Entrada de Dados":
