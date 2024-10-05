@@ -1,19 +1,42 @@
-import streamlit as st
-import plotly.express as px
-import pandas as pd
+import os
 from datetime import datetime
+
+import pandas as pd
+import plotly.express as px
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.agents.agent_types import AgentType  # Import da classe AgentType
+from langchain_community.agent_toolkits.sql.base import (
+    create_sql_agent,  # Import da função create_sql_agent
+)
+from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
+from langchain_community.utilities import SQLDatabase  # Import da classe SQLDatabase
+from langchain_google_genai import (
+    ChatGoogleGenerativeAI,  # Import da classe ChatGoogleGenerativeAI
+)
 from pydantic import ValidationError
 
 from contract import Produto, Vendas
 from database import (
     delete_all_sales_data,
+    obter_dados_api,
     salvar_no_postgres,
     salvar_no_postgres_em_lote,
-    obter_dados_api
 )
+
+# Carrega variáveis de ambiente (.env)
+load_dotenv()
+
+# Carrega credenciais do banco de dados (presume que estejam no .env)
+DB_HOST = os.getenv("DB_HOST")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Configuração da página
 st.set_page_config(page_title="CRM System", layout="wide")
+
 
 # Função para renderizar o formulário de entrada de dados
 def render_data_entry():
@@ -94,10 +117,9 @@ def render_data_entry():
         except Exception as e:
             st.error(f"Erro ao importar dados do CSV: {e}")
 
-    
 
-#Função para apagar todo o banco de dados
-def del_database():    
+# Função para apagar todo o banco de dados
+def del_database():
     # Botão para deletar todos os dados do banco de dados
     st.subheader("Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)")
     if st.button("Deletar todos os dados"):
@@ -106,6 +128,7 @@ def del_database():
         else:
             st.error("Erro ao deletar os dados do banco de dados.")
 
+
 # Função para renderizar o dashboard
 def render_dashboard():
     st.title("CRM System Dashboard")
@@ -113,33 +136,33 @@ def render_dashboard():
     # Visão Geral
     st.header("Visão Geral das Vendas")
     col1, col2, col3 = st.columns(3)
-    
-    total_revenue = obter_dados_api("total_revenue")    
+
+    total_revenue = obter_dados_api("total_revenue")
     with col1:
         st.metric("Faturamento Total", value=f"R$ {total_revenue['total_revenue']:.2f}")
 
-    total_sales = obter_dados_api("total_sales")    
+    total_sales = obter_dados_api("total_sales")
     with col2:
         st.metric("Número Total de Vendas", value=f"{total_sales['total_sales']}")
-    
-    average_ticket = obter_dados_api("average_ticket")    
+
+    average_ticket = obter_dados_api("average_ticket")
     with col3:
         st.metric("Ticket Médio", value=f"R$ {average_ticket['average_ticket']:.2f}")
-    
+
     # Botão para atualizar os dados
     if st.button("Atualizar Dados"):
-      st.rerun()  # Reinicia a execução do dashboard
+        st.rerun()  # Reinicia a execução do dashboard
 
     # Análise de Produtos
     st.header("Análise de Produtos")
     product_revenue = obter_dados_api("product_revenue")
     product_revenue_df = pd.DataFrame(product_revenue)
     fig_pie = px.pie(
-        product_revenue_df, 
-        values="product_revenue", 
+        product_revenue_df,
+        values="product_revenue",
         names="produto",
         title="Participação dos Produtos na Receita",
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        color_discrete_sequence=px.colors.qualitative.Pastel,
     )
     st.plotly_chart(fig_pie, use_container_width=True)
 
@@ -152,7 +175,7 @@ def render_dashboard():
         x="email",
         y="revenue_per_salesperson",
         title="Faturamento por Vendedor",
-        labels={"email": "Vendedor", "revenue_per_salesperson": "Faturamento"}
+        labels={"email": "Vendedor", "revenue_per_salesperson": "Faturamento"},
     )
     st.plotly_chart(fig_bar, use_container_width=True)
 
@@ -165,22 +188,63 @@ def render_dashboard():
         x="revenue_month",
         y="revenue_per_month",
         title="Evolução do Faturamento Mensal",
-        labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"}
+        labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"},
     )
     st.plotly_chart(fig_line, use_container_width=True)
 
-    
+
+# Função para consulta sql por Chat com langchain;
+def st_llm():
+
+    # Cria a instância do LLM (ChatGoogleGenerativeAI)
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+
+    # Conecta ao banco de dados PostgreSQL
+    db = SQLDatabase.from_uri(
+        f"postgresql+psycopg2://{DB_USER}:{DB_PASS}@{DB_HOST}:5432/{DB_NAME}"
+    )
+
+    # Cria o toolkit do agente SQL
+    toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+
+    # Cria o agente baseado em SQL
+    agent_executor = create_sql_agent(
+        llm=llm,
+        toolkit=toolkit,
+        verbose=True,
+        agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
+    )
+
+    # Streamlit
+    st.title("Chat SQL com LangChain")
+
+    user_input = st.text_input("Digite sua pergunta SQL:")
+
+    if user_input:
+        with st.spinner("Executando a consulta..."):
+            try:
+                response = agent_executor.run(user_input)
+                st.success(f"Resposta: {response}")
+            except Exception as e:
+                st.error(f"Erro ao executar a consulta: {e}")
+
+
 # Função principal
 def main():
     st.sidebar.title("Navegação")
-    page = st.sidebar.radio("Ir para", ["Entrada de Dados", "Dashboard", "Apagar Dados"])
+    page = st.sidebar.radio(
+        "Ir para", ["Entrada de Dados", "Dashboard", "Apagar Dados"]
+    )
 
     if page == "Entrada de Dados":
         render_data_entry()
     elif page == "Dashboard":
         render_dashboard()
+    elif page == "Chat SQL":
+        st_llm()
     elif page == "Apagar Dados":
         del_database()
-    
+
+
 if __name__ == "__main__":
     main()
