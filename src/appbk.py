@@ -32,57 +32,11 @@ DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Configuração da página
 st.set_page_config(page_title="CRM System", layout="wide")
 
-# Variável para armazenar a chave da API (inicialmente None)
-google_api_key = None
-
-def home():
-  # Define a capa do projeto
-  st.title("CRM System")
-  st.markdown("## Dashboard Interativo com LangChain & Streamlit")
-
-  st.image("https://www.streamlit.io/images/brand/streamlit-logo-primary-dark.svg", width=200)  # Adiciona o logo do Streamlit
-
-  st.markdown("---")
-
-  st.markdown(
-      """
-      Este projeto demonstra um sistema de CRM (Customer Relationship Management) construído com Python e o Streamlit, utilizando LangChain para a integração com o Google AI. Você pode inserir dados de vendas manualmente, importar dados de um arquivo CSV, consultar o banco de dados com a LangChain e visualizar indicadores chave de desempenho (KPIs) de forma interativa.
-      """
-  )
-
-  st.markdown("## Arquitetura do Projeto")
-  st.markdown(
-      """
-      **Frontend:**
-      - Streamlit: Interface web interativa.
-
-      **Backend:**
-      - Python: Linguagem de programação.
-      - PostgreSQL: Banco de dados relacional.
-      - FastAPI: Framework para API RESTful.
-      - DBT: Ferramenta para transformação de dados.
-
-      **Inteligência Artificial:**
-      - LangChain: Framework para a integração com LLMs (Large Language Models).
-      - Google AI: Modelo de linguagem de ponta.
-      """
-  )
-
-  st.markdown("## Usabilidade")
-
-  st.markdown(
-      """
-      - **Entrada de Dados:** Insira dados de vendas manualmente ou importe dados de um arquivo CSV.
-      - **Dashboard Interativo:** Visualize KPIs de vendas em gráficos interativos.
-      - **Consulta com LangChain:** Faça perguntas em linguagem natural e obtenha respostas de consultas SQL.
-      """
-  )
-
-  st.markdown("---")
 
 # Função para renderizar o formulário de entrada de dados
 def render_data_entry():
@@ -163,6 +117,7 @@ def render_data_entry():
         except Exception as e:
             st.error(f"Erro ao importar dados do CSV: {e}")
 
+
 # Função para apagar todo o banco de dados
 def del_database():
     # Botão para deletar todos os dados do banco de dados
@@ -172,6 +127,8 @@ def del_database():
             st.success("Todos os dados foram deletados do banco de dados.", icon="🔥")
         else:
             st.error("Erro ao deletar os dados do banco de dados.")
+
+
 # Função para renderizar o dashboard
 def render_dashboard():
     st.title("CRM System Dashboard")
@@ -235,21 +192,12 @@ def render_dashboard():
     )
     st.plotly_chart(fig_line, use_container_width=True)
 
+
 # Função para consulta sql por Chat com langchain;
 def st_llm():
-    # Verifica se a chave da API foi inserida
-    global google_api_key  # Declara a variável global para modificá-la dentro da função
-    if google_api_key is None:
-        google_api_key = st.text_input("Insira sua chave da API do Google AI:", type="password")
-        st.markdown(
-            "Para criar uma chave da API do Google Gemini, siga as instruções: [Criar uma Chave API do Google Gemini](https://aistudio.google.com/app/apikey)"
-        )
-        if not google_api_key:
-            st.error("É necessário inserir a chave da API para utilizar o Chat SQL.")
-            return
 
     # Cria a instância do LLM (ChatGoogleGenerativeAI)
-    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0, api_key=google_api_key)
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
 
     # Conecta ao banco de dados PostgreSQL
     db = SQLDatabase.from_uri(
@@ -270,7 +218,7 @@ def st_llm():
     # Streamlit
     st.title("Chat SQL com LangChain")
 
-    user_input = st.text_input("Digite sua pergunta sobre o banco de dados:")
+    user_input = st.text_input("Digite sua pergunta SQL:")
 
     if user_input:
         with st.spinner("Executando a consulta..."):
@@ -285,11 +233,10 @@ def st_llm():
 def main():
     st.sidebar.title("Navegação")
     page = st.sidebar.radio(
-        "Ir para", ["Home", "Entrada de Dados", "Dashboard", "Chat SQL", "Apagar Dados"]
+        "Ir para", ["Entrada de Dados", "Dashboard", "Chat SQL", "Apagar Dados"]
     )
-    if page == "Home":
-        home()
-    elif page == "Entrada de Dados":
+
+    if page == "Entrada de Dados":
         render_data_entry()
     elif page == "Dashboard":
         render_dashboard()
