@@ -1,7 +1,8 @@
-import streamlit as st
-import plotly.express as px
 import pandas as pd
+import plotly.express as px
 import requests
+import streamlit as st
+
 
 # Função para obter dados da API
 def obter_dados_api(endpoint):
@@ -11,6 +12,7 @@ def obter_dados_api(endpoint):
         return response.json()
     else:
         st.error(f"Erro ao obter dados da API: {response.status_code}")
+
 
 # Dashboard Streamlit
 st.title("CRM System Dashboard")
@@ -24,13 +26,28 @@ col1, col2 = st.columns(2)
 with col1:
     # Faturamento Total
     total_revenue = obter_dados_api("total_revenue")
-    st.metric("Faturamento Total", value=total_revenue["total_revenue"], delta=1000, delta_color="normal")
+    st.metric(
+        "Faturamento Total",
+        value=total_revenue["total_revenue"],
+        delta=1000,
+        delta_color="normal",
+    )
 with col2:
     # Número Total de Vendas
     total_sales = obter_dados_api("total_sales")
-    st.metric("Número Total de Vendas", value=total_sales["total_sales"], delta=50, delta_color="normal")
+    st.metric(
+        "Número Total de Vendas",
+        value=total_sales["total_sales"],
+        delta=50,
+        delta_color="normal",
+    )
 
-st.metric("Ticket Médio", value=obter_dados_api("average_ticket")["average_ticket"], delta=10, delta_color="inverse")
+st.metric(
+    "Ticket Médio",
+    value=obter_dados_api("average_ticket")["average_ticket"],
+    delta=10,
+    delta_color="inverse",
+)
 
 # Botão para atualizar os dados
 if st.button("Atualizar Dados"):
@@ -44,11 +61,11 @@ st.markdown("## Análise de Produtos")
 # Gráfico de Pizza: Participação dos Produtos na Receita
 product_revenue = obter_dados_api("product_revenue")
 fig_pie = px.pie(
-    pd.DataFrame(product_revenue), 
-    values="product_revenue", 
+    pd.DataFrame(product_revenue),
+    values="product_revenue",
     names="produto",
     title="Participação dos Produtos na Receita",
-    color_discrete_sequence=px.colors.qualitative.Pastel
+    color_discrete_sequence=px.colors.qualitative.Pastel,
 )
 st.plotly_chart(fig_pie)
 
@@ -64,7 +81,7 @@ fig_bar = px.bar(
     x="email",
     y="revenue_per_salesperson",
     title="Faturamento por Vendedor",
-    labels={"email": "Vendedor", "revenue_per_salesperson": "Faturamento"}
+    labels={"email": "Vendedor", "revenue_per_salesperson": "Faturamento"},
 )
 st.plotly_chart(fig_bar)
 
@@ -80,7 +97,7 @@ fig_line = px.line(
     x="revenue_month",
     y="revenue_per_month",
     title="Evolução do Faturamento Mensal",
-    labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"}
+    labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"},
 )
 st.plotly_chart(fig_line)
 
@@ -96,7 +113,7 @@ fig_bar_day = px.bar(
     x="sales_date",
     y="sales_per_day",
     title="Vendas por Dia",
-    labels={"sales_date": "Data", "sales_per_day": "Vendas"}
+    labels={"sales_date": "Data", "sales_per_day": "Vendas"},
 )
 st.plotly_chart(fig_bar_day)
 
@@ -112,7 +129,7 @@ fig_bar_month = px.bar(
     x="sales_month",
     y="sales_per_month",
     title="Vendas por Mês",
-    labels={"sales_month": "Mês", "sales_per_month": "Vendas"}
+    labels={"sales_month": "Mês", "sales_per_month": "Vendas"},
 )
 st.plotly_chart(fig_bar_month)
 
@@ -128,7 +145,7 @@ fig_bar_year = px.bar(
     x="sales_year",
     y="sales_per_year",
     title="Vendas por Ano",
-    labels={"sales_year": "Ano", "sales_per_year": "Vendas"}
+    labels={"sales_year": "Ano", "sales_per_year": "Vendas"},
 )
 st.plotly_chart(fig_bar_year)
 
@@ -144,7 +161,7 @@ fig_bar_revenue_day = px.bar(
     x="revenue_date",
     y="revenue_per_day",
     title="Faturamento por Dia",
-    labels={"revenue_date": "Data", "revenue_per_day": "Faturamento"}
+    labels={"revenue_date": "Data", "revenue_per_day": "Faturamento"},
 )
 st.plotly_chart(fig_bar_revenue_day)
 
@@ -160,7 +177,7 @@ fig_bar_revenue_month = px.bar(
     x="revenue_month",
     y="revenue_per_month",
     title="Faturamento por Mês",
-    labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"}
+    labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"},
 )
 st.plotly_chart(fig_bar_revenue_month)
 
@@ -176,6 +193,6 @@ fig_bar_revenue_year = px.bar(
     x="revenue_year",
     y="revenue_per_year",
     title="Faturamento por Ano",
-    labels={"revenue_year": "Ano", "revenue_per_year": "Faturamento"}
+    labels={"revenue_year": "Ano", "revenue_per_year": "Faturamento"},
 )
 st.plotly_chart(fig_bar_revenue_year)

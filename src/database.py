@@ -1,6 +1,7 @@
 import os
-import requests
+
 import psycopg2
+import requests
 from dotenv import load_dotenv
 from psycopg2 import sql
 from psycopg2.extras import execute_values
@@ -144,7 +145,8 @@ def delete_all_sales_data():
         return True
     except Exception as e:
         return False, f"Erro ao deletar os dados do banco de dados: {e}"
-    
+
+
 # Função para obter dados da API
 def obter_dados_api(endpoint):
     url = f"https://jcnok-test1.hf.space/{endpoint}"  # Endereço da sua API
