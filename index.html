@@ -10,6 +10,8 @@
       
       
       
+        <link rel="next" href="dbt_docs/">
+      
       
       <link rel="icon" href="assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.35">
@@ -96,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Documentação do projeto:
+              Home
             
           </span>
         </div>
@@ -202,7 +204,7 @@
           
   
   <span class="md-ellipsis">
-    Documentação do projeto:
+    Home
   </span>
   
 
@@ -213,7 +215,7 @@
         
   
   <span class="md-ellipsis">
-    Documentação do projeto:
+    Home
   </span>
   
 
@@ -283,6 +285,26 @@
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="dbt_docs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DBT documentation
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -374,6 +396,8 @@
 
 
 <h1 id="documentacao-do-projeto">Documentação do projeto:</h1>
+<iframe src="crm_system.html" width="100%" height="600px" frameborder="0"></iframe>
+
 
 
 <div class="doc doc-object doc-class">
@@ -542,8 +566,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">54</span>
-<span class="normal">55</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
 <span class="normal">56</span>
 <span class="normal">57</span>
 <span class="normal">58</span>
@@ -572,7 +595,8 @@
 <span class="normal">81</span>
 <span class="normal">82</span>
 <span class="normal">83</span>
-<span class="normal">84</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres</span><span class="p">(</span><span class="n">dados</span><span class="p">:</span> <span class="n">Vendas</span><span class="p">):</span>
+<span class="normal">84</span>
+<span class="normal">85</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres</span><span class="p">(</span><span class="n">dados</span><span class="p">:</span> <span class="n">Vendas</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Salva os dados validados no PostgreSQL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -620,8 +644,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">21</span>
-<span class="normal">22</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
 <span class="normal">23</span>
 <span class="normal">24</span>
 <span class="normal">25</span>
@@ -649,7 +672,8 @@
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
-<span class="normal">50</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">criar_tabela_vendas</span><span class="p">():</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">criar_tabela_vendas</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Cria a tabela de vendas no PostgreSQL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -696,8 +720,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 88</span>
-<span class="normal"> 89</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 89</span>
 <span class="normal"> 90</span>
 <span class="normal"> 91</span>
 <span class="normal"> 92</span>
@@ -731,7 +754,8 @@
 <span class="normal">120</span>
 <span class="normal">121</span>
 <span class="normal">122</span>
-<span class="normal">123</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres_em_lote</span><span class="p">(</span><span class="n">vendas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vendas</span><span class="p">]):</span>
+<span class="normal">123</span>
+<span class="normal">124</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">salvar_no_postgres_em_lote</span><span class="p">(</span><span class="n">vendas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Vendas</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Salva uma lista de objetos Vendas no PostgreSQL em um único lote.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -784,8 +808,7 @@
 
             <details class="quote">
               <summary>Source code in <code>src/database.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">126</span>
-<span class="normal">127</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">127</span>
 <span class="normal">128</span>
 <span class="normal">129</span>
 <span class="normal">130</span>
@@ -804,7 +827,8 @@
 <span class="normal">143</span>
 <span class="normal">144</span>
 <span class="normal">145</span>
-<span class="normal">146</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">delete_all_sales_data</span><span class="p">():</span>
+<span class="normal">146</span>
+<span class="normal">147</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">delete_all_sales_data</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Deleta todos os dados da tabela de vendas no PostgreSQL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
