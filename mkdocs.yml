@@ -2,6 +2,7 @@ site_name: My Docs
 
 nav:
   - Home: index.md
+  - DBT documentation: dtb_docs/index.html
 
 docs_dir: 'docs/'
 
