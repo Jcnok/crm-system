@@ -1,5 +1,8 @@
 site_name: My Docs
 
+nav:
+  - Home: index.md
+
 docs_dir: 'docs/'
 
 theme:
