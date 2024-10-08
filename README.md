@@ -186,31 +186,3 @@ Abra seu navegador na URL indicada no console para acessar a interface do Stream
 ## Integração Contínua (CI)
 
 Este projeto inclui uma configuração de CI usando GitHub Actions, automatizando testes e verificação de código em cada push para a branch `main` e pull request. Você pode encontrar a configuração no arquivo `.github/workflows/python-ci.yml`.
-
-
-## Instalação e Execução (com Docker Compose)
-
-Este projeto também pode ser executado utilizando o Docker Compose. Para isso, certifique-se de ter o Docker e o Docker Compose instalados.
-
-Após clonar o repositório, execute o comando:
-
-```bash
-docker-compose up -d
-```
-
-Isso iniciará todos os serviços definidos no arquivo `docker-compose.yml` (disponível no GitHub), incluindo o PostgreSQL, o aplicativo Streamlit e a documentação.
-
-Para acessar o aplicativo, abra seu navegador e acesse `http://localhost:8501/`.
-A documentação estará disponível em `http://localhost:8000`.
-
-
-## Links para Ambiente em Nuvem
-
-Para testar o aplicativo e visualizar os resultados, você pode utilizar os seguintes links:
-
-- **Streamlit:** [https://crm-system.streamlit.app/](https://crm-system.streamlit.app/)
-- **Documentação:** [https://jcnok.github.io/crm-system/](https://jcnok.github.io/crm-system/)
-
-
-
-
