@@ -44,7 +44,7 @@ def home():
   st.title("CRM System")
   st.markdown("## Dashboard Interativo com LangChain & Streamlit")
 
-  st.image("https://github.com/Jcnok/crm-system/blob/master/img/diagrama.gif", width=200)  # Adiciona o logo do Streamlit
+  st.image("https://github.com/Jcnok/crm-system/blob/master/img/diagrama.gif?raw=true", width=200)  # Adiciona o logo do Streamlit
 
   st.markdown("---")
 
