@@ -190,7 +190,11 @@ async def get_sales_per_month():
         results = conn.execute(text("SELECT * FROM  sales_per_month")).fetchall()
         if results:
             return [
-                {"sales_month": row[0], "sales_per_month": row[1]} for row in results
+                {"sales_year": row[0], "sales_month": row[1], "sales_per_month": row[2]}
+                for row in results
+            ]
+            return [
+                {""sales_month": row[0], "sales_per_month": row[1]} for row in results
             ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
@@ -228,7 +232,7 @@ async def get_revenue_per_month():
         results = conn.execute(text("SELECT * FROM  revenue_per_month")).fetchall()
         if results:
             return [
-                {"revenue_month": row[0], "revenue_per_month": row[1]}
+                {"revenue_year": row[0], "revenue_month": row[1], "revenue_per_month": row[2]}
                 for row in results
             ]
         else:
