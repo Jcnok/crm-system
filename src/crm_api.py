@@ -194,7 +194,7 @@ async def get_sales_per_month():
                 for row in results
             ]
             return [
-                {""sales_month": row[0], "sales_per_month": row[1]} for row in results
+                {"sales_month": row[0], "sales_per_month": row[1]} for row in results
             ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
