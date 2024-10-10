@@ -224,15 +224,31 @@ def render_dashboard():
 
     # Tendências Temporais
     st.header("Tendências Temporais")
+
+    # Obter os dados
     revenue_per_month = obter_dados_api("revenue_per_month")
     revenue_per_month_df = pd.DataFrame(revenue_per_month)
+
+    # Extrair o ano atual
+    ano_atual = datetime.now().year
+
+    # Adicionar o filtro de ano com o padrão para o ano atual
+    anos_disponiveis = sorted(revenue_per_month_df["revenue_year"].unique(), reverse=True)
+    ano_selecionado = st.selectbox("Selecione o ano", options=anos_disponiveis, index=anos_disponiveis.index(ano_atual))
+
+    # Filtrar os dados com base no ano selecionado
+    dados_filtrados = revenue_per_month_df[revenue_per_month_df["revenue_year"] == ano_selecionado]
+
+    # Criar o gráfico de linha filtrado
     fig_line = px.line(
-        revenue_per_month_df,
+        dados_filtrados,
         x="revenue_month",
         y="revenue_per_month",
-        title="Evolução do Faturamento Mensal",
+        title=f"Evolução do Faturamento Mensal - {ano_selecionado}",
         labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"},
     )
+
+    # Exibir o gráfico
     st.plotly_chart(fig_line, use_container_width=True)
 
 # Função para consulta sql por Chat com langchain;
