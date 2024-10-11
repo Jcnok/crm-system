@@ -127,7 +127,7 @@ async def get_top3_salesperson_value(ano: int):
         stmt = text(
             f"SELECT * FROM revenue_per_salesperson WHERE year = {ano} Order by revenue_per_salesperson Desc LIMIT 3"
         )
-        results = conn.execute(stmt).fetchone()
+        results = conn.execute(stmt).fetchall()
         if results:
             return [
                 {"email": row[1], "salesperson_total_revenue": row[2]}
@@ -144,7 +144,7 @@ async def get_top3_salesperson_quantity(ano: int):
         stmt = text(
             f"SELECT * FROM sales_per_salesperson WHERE year = {ano} Order by sales_per_salesperson Desc LIMIT 3"
         )
-        results = conn.execute(stmt).fetchone()
+        results = conn.execute(stmt).fetchall()
         if results:
             return [
                 {"email": row[0], "salesperson_total_sales": row[2]} for row in results
