@@ -39,6 +39,7 @@ st.set_page_config(page_title="CRM System", layout="wide")
 # Variável para armazenar a chave da API (inicialmente None)
 google_api_key = None
 
+
 def home():
     # Define a capa do projeto
     st.title("CRM System")
@@ -167,6 +168,7 @@ def render_data_entry():
         except Exception as e:
             st.error(f"Erro ao importar dados do CSV: {e}")
 
+
 # Função para apagar todo o banco de dados
 def del_database():
     # Botão para deletar todos os dados do banco de dados
@@ -186,19 +188,15 @@ def render_dashboard():
     st.header("Visão Geral das Vendas")
     col1, col2, col3 = st.columns(3)
 
-    ano_selecionado = st.selectbox(
-        "Selecione o ano", options=[2023, 2024], index=1
-    )  # Adiciona o seletor de ano
-
-    total_revenue = obter_dados_api(f"total_revenue/{ano_selecionado}")
+    total_revenue = obter_dados_api("total_revenue")
     with col1:
         st.metric("Faturamento Total", value=f"R$ {total_revenue['total_revenue']:.2f}")
 
-    total_sales = obter_dados_api(f"total_sales/{ano_selecionado}")
+    total_sales = obter_dados_api("total_sales")
     with col2:
         st.metric("Número Total de Vendas", value=f"{total_sales['total_sales']}")
 
-    average_ticket = obter_dados_api(f"average_ticket/{ano_selecionado}")
+    average_ticket = obter_dados_api("average_ticket")
     with col3:
         st.metric("Ticket Médio", value=f"R$ {average_ticket['average_ticket']:.2f}")
 
@@ -208,7 +206,7 @@ def render_dashboard():
 
     # Análise de Produtos
     st.header("Análise de Produtos")
-    product_revenue = obter_dados_api(f"product_revenue/{ano_selecionado}")
+    product_revenue = obter_dados_api("product_revenue")
     product_revenue_df = pd.DataFrame(product_revenue)
     fig_pie = px.pie(
         product_revenue_df,
@@ -221,9 +219,7 @@ def render_dashboard():
 
     # Desempenho de Vendedores
     st.header("Desempenho de Vendedores")
-    revenue_per_salesperson = obter_dados_api(
-        f"revenue_per_salesperson/{ano_selecionado}"
-    )
+    revenue_per_salesperson = obter_dados_api("revenue_per_salesperson")
     revenue_per_salesperson_df = pd.DataFrame(revenue_per_salesperson)
     fig_bar = px.bar(
         revenue_per_salesperson_df,
@@ -238,12 +234,30 @@ def render_dashboard():
     st.header("Tendências Temporais")
 
     # Obter os dados
-    revenue_per_month = obter_dados_api(f"revenue_per_month/{ano_selecionado}")
+    revenue_per_month = obter_dados_api("revenue_per_month")
     revenue_per_month_df = pd.DataFrame(revenue_per_month)
-    
+
+    # Extrair o ano atual
+    ano_atual = datetime.now().year
+
+    # Adicionar o filtro de ano com o padrão para o ano atual
+    anos_disponiveis = sorted(
+        revenue_per_month_df["revenue_year"].unique(), reverse=True
+    )
+    ano_selecionado = st.selectbox(
+        "Selecione o ano",
+        options=anos_disponiveis,
+        index=anos_disponiveis.index(ano_atual),
+    )
+
+    # Filtrar os dados com base no ano selecionado
+    dados_filtrados = revenue_per_month_df[
+        revenue_per_month_df["revenue_year"] == ano_selecionado
+    ]
+
     # Criar o gráfico de linha filtrado
     fig_line = px.line(
-        revenue_per_month_df,
+        dados_filtrados,
         x="revenue_month",
         y="revenue_per_month",
         title=f"Evolução do Faturamento Mensal - {ano_selecionado}",
@@ -252,110 +266,6 @@ def render_dashboard():
 
     # Exibir o gráfico
     st.plotly_chart(fig_line, use_container_width=True)
-
-    # Top 3 Vendedores (Valor)
-    st.header("Top 3 Vendedores (Valor)")
-    top_salesperson_value = obter_dados_api(f"top3_salesperson_value/{ano_selecionado}")
-    top_salesperson_value_df = pd.DataFrame(top_salesperson_value)
-    fig_bar_top_sales = px.bar(
-        top_salesperson_value_df,
-        x="email",
-        y="salesperson_total_revenue",
-        title="Top 3 Vendedores (Valor)",
-        labels={"email": "Vendedor", "salesperson_total_revenue": "Faturamento"},
-    )
-    st.plotly_chart(fig_bar_top_sales, use_container_width=True)
-
-    # Top 3 Vendedores (Quantidade)
-    st.header("Top 3 Vendedores (Quantidade)")
-    top_salesperson_quantity = obter_dados_api(f"top3_salesperson_quantity/{ano_selecionado}")
-    top_salesperson_quantity_df = pd.DataFrame(top_salesperson_quantity)
-    fig_bar_top_sales_quantity = px.bar(
-        top_salesperson_quantity_df,
-        x="email",
-        y="salesperson_total_sales",
-        title="Top 3 Vendedores (Quantidade)",
-        labels={"email": "Vendedor", "salesperson_total_sales": "Vendas"},
-    )
-    st.plotly_chart(fig_bar_top_sales_quantity, use_container_width=True)
-
-    # Vendas por Dia
-    st.header("Vendas por Dia")
-    sales_per_day = obter_dados_api(f"sales_per_day/{ano_selecionado}")
-    sales_per_day_df = pd.DataFrame(sales_per_day)
-    fig_bar_day = px.bar(
-        sales_per_day_df,
-        x="sales_date",
-        y="sales_per_day",
-        title="Vendas por Dia",
-        labels={"sales_date": "Data", "sales_per_day": "Vendas"},
-    )
-    st.plotly_chart(fig_bar_day, use_container_width=True)
-
-    # Vendas por Mês
-    st.header("Vendas por Mês")
-    sales_per_month = obter_dados_api(f"sales_per_month/{ano_selecionado}")
-    sales_per_month_df = pd.DataFrame(sales_per_month)
-    fig_bar_month = px.bar(
-        sales_per_month_df,
-        x="sales_month",
-        y="sales_per_month",
-        title="Vendas por Mês",
-        labels={"sales_month": "Mês", "sales_per_month": "Vendas"},
-    )
-    st.plotly_chart(fig_bar_month, use_container_width=True)
-
-    # Vendas por Ano
-    st.header("Vendas por Ano")
-    sales_per_year = obter_dados_api(f"sales_per_year/{ano_selecionado}")
-    sales_per_year_df = pd.DataFrame(sales_per_year)
-    fig_bar_year = px.bar(
-        sales_per_year_df,
-        x="sales_year",
-        y="sales_per_year",
-        title="Vendas por Ano",
-        labels={"sales_year": "Ano", "sales_per_year": "Vendas"},
-    )
-    st.plotly_chart(fig_bar_year, use_container_width=True)
-
-    # Faturamento por Dia
-    st.header("Faturamento por Dia")
-    revenue_per_day = obter_dados_api(f"revenue_per_day/{ano_selecionado}")
-    revenue_per_day_df = pd.DataFrame(revenue_per_day)
-    fig_bar_revenue_day = px.bar(
-        revenue_per_day_df,
-        x="revenue_date",
-        y="revenue_per_day",
-        title="Faturamento por Dia",
-        labels={"revenue_date": "Data", "revenue_per_day": "Faturamento"},
-    )
-    st.plotly_chart(fig_bar_revenue_day, use_container_width=True)
-
-    # Faturamento por Mês
-    st.header("Faturamento por Mês")
-    revenue_per_month = obter_dados_api(f"revenue_per_month/{ano_selecionado}")
-    revenue_per_month_df = pd.DataFrame(revenue_per_month)
-    fig_bar_revenue_month = px.bar(
-        revenue_per_month_df,
-        x="revenue_month",
-        y="revenue_per_month",
-        title="Faturamento por Mês",
-        labels={"revenue_month": "Mês", "revenue_per_month": "Faturamento"},
-    )
-    st.plotly_chart(fig_bar_revenue_month, use_container_width=True)
-
-    # Faturamento por Ano
-    st.header("Faturamento por Ano")
-    revenue_per_year = obter_dados_api(f"revenue_per_year/{ano_selecionado}")
-    revenue_per_year_df = pd.DataFrame(revenue_per_year)
-    fig_bar_revenue_year = px.bar(
-        revenue_per_year_df,
-        x="revenue_year",
-        y="revenue_per_year",
-        title="Faturamento por Ano",
-        labels={"revenue_year": "Ano", "revenue_per_year": "Faturamento"},
-    )
-    st.plotly_chart(fig_bar_revenue_year, use_container_width=True)
 
 
 # Função para consulta sql por Chat com langchain;
