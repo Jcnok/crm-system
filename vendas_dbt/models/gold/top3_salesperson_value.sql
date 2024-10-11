@@ -8,6 +8,7 @@ SELECT
     SUM(valor) AS salesperson_total_revenue
 FROM
     {{ ref('silver_vendas') }}
+WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}    
 GROUP BY
     email
 ORDER BY
