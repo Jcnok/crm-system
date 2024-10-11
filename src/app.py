@@ -226,7 +226,7 @@ def render_dashboard():
     )
     revenue_per_salesperson_df = pd.DataFrame(revenue_per_salesperson)
     fig_bar = px.bar(
-        revenue_per_salesperson_df,
+        revenue_per_salesperson_df.sort_values(by="revenue_per_salesperson", ascending=False),
         x="email",
         y="revenue_per_salesperson",
         title="Faturamento por Vendedor",
