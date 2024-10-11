@@ -5,12 +5,12 @@
 
 SELECT
     produto,
+    EXTRACT(YEAR FROM data) AS year,
     SUM(quantidade) AS total_product_quantity
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
 GROUP BY
-    produto
+   year,produto
 ORDER BY
     total_product_quantity DESC
 LIMIT 1

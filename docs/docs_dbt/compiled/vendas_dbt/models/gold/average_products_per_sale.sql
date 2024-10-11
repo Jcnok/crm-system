@@ -4,7 +4,9 @@
 -- Calcula a quantidade média de produtos vendidos por venda em um ano específico.
 
 SELECT
+    EXTRACT(YEAR FROM data) AS year,
     AVG(quantidade) AS average_products_per_sale
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
+GROUP BY
+    year

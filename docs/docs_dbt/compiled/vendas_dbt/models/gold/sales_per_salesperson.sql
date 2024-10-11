@@ -5,9 +5,9 @@
 
 SELECT
     email,
+    EXTRACT(YEAR FROM data) AS year,
     COUNT(*) AS sales_per_salesperson
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
 GROUP BY
-    email
+    year,email
