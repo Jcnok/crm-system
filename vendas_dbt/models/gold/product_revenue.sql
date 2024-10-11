@@ -5,9 +5,9 @@
 
 SELECT
     produto,
+    EXTRACT(YEAR FROM data) AS year,
     SUM(valor) AS product_revenue
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
 GROUP BY
-    produto
+    year,produto

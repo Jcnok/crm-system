@@ -4,7 +4,9 @@
 -- Calcula o valor médio das compras realizadas pelos clientes em um ano específico.
 
 SELECT
+    EXTRACT(YEAR FROM data) AS year,
     AVG(valor) AS average_ticket
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
+GROUP BY   
+    year

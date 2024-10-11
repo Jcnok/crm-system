@@ -8,6 +8,5 @@ SELECT
     COUNT(*) AS sales_per_year
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
 GROUP BY
     sales_year
