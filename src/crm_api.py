@@ -26,11 +26,11 @@ app = FastAPI()
 async def get_total_revenue(ano: int):
     with engine.connect() as conn:
         stmt = text(
-            f"SELECT total_revenue FROM  total_revenue WHERE EXTRACT(YEAR FROM data) = {ano}"
+            f"SELECT * FROM  total_revenue WHERE year = {ano}"
         )  # Usa a função text() para executar a consulta
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"total_revenue": result[0]}
+            return {"total_revenue": result[1]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -39,10 +39,10 @@ async def get_total_revenue(ano: int):
 @app.get("/total_sales/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_total_sales(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT total_sales FROM  total_sales WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM  total_sales WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"total_sales": result[0]}
+            return {"total_sales": result[1]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -51,10 +51,10 @@ async def get_total_sales(ano: int):
 @app.get("/average_sale_value/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_sale_value(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT average_sale_value FROM  average_sale_value WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM average_sale_value WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"average_sale_value": result[0]}
+            return {"average_sale_value": result[1]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -63,10 +63,10 @@ async def get_average_sale_value(ano: int):
 @app.get("/average_products_per_sale/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_products_per_sale(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT average_products_per_sale FROM  average_products_per_sale WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM average_products_per_sale WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"average_products_per_sale": result[0]}
+            return {"average_products_per_sale": result[1]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -75,10 +75,10 @@ async def get_average_products_per_sale(ano: int):
 @app.get("/average_ticket/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_ticket(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT average_ticket FROM  average_ticket WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM average_ticket WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"average_ticket": result[0]}
+            return {"average_ticket": result[1]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -87,10 +87,10 @@ async def get_average_ticket(ano: int):
 @app.get("/best_selling_product_value/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_best_selling_product_value(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM  best_selling_product_value WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM best_selling_product_value WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"produto": result[0], "total_product_revenue": result[1]}
+            return {"produto": result[0], "total_product_revenue": result[2]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -99,10 +99,10 @@ async def get_best_selling_product_value(ano: int):
 @app.get("/best_selling_product_quantity/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_best_selling_product_quantity(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM  best_selling_product_quantity WHERE EXTRACT(YEAR FROM data) = {ano}")
+        stmt = text(f"SELECT * FROM best_selling_product_quantity WHERE year = {ano}")
         result = conn.execute(stmt).fetchone()
         if result:
-            return {"produto": result[0], "total_product_quantity": result[1]}
+            return {"produto": result[0], "total_product_quantity": result[2]}
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -111,33 +111,44 @@ async def get_best_selling_product_quantity(ano: int):
 @app.get("/product_revenue/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_product_revenue(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  product_revenue WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM product_revenue WHERE year = {ano}")
+        ).fetchall()
         if results:
-            return [{"produto": row[0], "product_revenue": row[1]} for row in results]
+            return [{"produto": row[0], "product_revenue": row[2]} for row in results]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
 
 # Endpoint para obter o Vendedor com Mais Vendas (em Valor)
-@app.get("/top_salesperson_value/{ano}")  # Adiciona o parâmetro 'ano'
-async def get_top_salesperson_value(ano: int):
+@app.get("/top3_salesperson_value/{ano}")  # Adiciona o parâmetro 'ano'
+async def get_top3_salesperson_value(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM  top_salesperson_value WHERE EXTRACT(YEAR FROM data) = {ano}")
-        result = conn.execute(stmt).fetchone()
-        if result:
-            return {"email": result[0], "salesperson_total_revenue": result[1]}
+        stmt = text(
+            f"SELECT * FROM revenue_per_salesperson WHERE year = {ano} Order by revenue_per_salesperson Desc LIMIT 3"
+        )
+        results = conn.execute(stmt).fetchone()
+        if results:
+            return [
+                {"email": row[1], "salesperson_total_revenue": row[2]}
+                for row in results
+            ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
 
 # Endpoint para obter o Vendedor com Mais Vendas (em Quantidade)
-@app.get("/top_salesperson_quantity/{ano}")  # Adiciona o parâmetro 'ano'
-async def get_top_salesperson_quantity(ano: int):
+@app.get("/top3_salesperson_quantity/{ano}")  # Adiciona o parâmetro 'ano'
+async def get_top3_salesperson_quantity(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM  top_salesperson_quantity WHERE EXTRACT(YEAR FROM data) = {ano}")
-        result = conn.execute(stmt).fetchone()
-        if result:
-            return {"email": result[0], "salesperson_total_sales": result[1]}
+        stmt = text(
+            f"SELECT * FROM sales_per_salesperson WHERE year = {ano} Order by sales_per_salesperson Desc LIMIT 3"
+        )
+        results = conn.execute(stmt).fetchone()
+        if results:
+            return [
+                {"email": row[0], "salesperson_total_sales": row[2]} for row in results
+            ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -146,10 +157,12 @@ async def get_top_salesperson_quantity(ano: int):
 @app.get("/sales_per_salesperson/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_sales_per_salesperson(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  sales_per_salesperson WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM sales_per_salesperson WHERE year = {ano}")
+        ).fetchall()
         if results:
             return [
-                {"email": row[0], "sales_per_salesperson": row[1]} for row in results
+                {"email": row[0], "sales_per_salesperson": row[2]} for row in results
             ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
@@ -160,11 +173,11 @@ async def get_sales_per_salesperson(ano: int):
 async def get_revenue_per_salesperson(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  revenue_per_salesperson WHERE EXTRACT(YEAR FROM data) = {ano}")
+            text(f"SELECT * FROM revenue_per_salesperson WHERE year = {ano}")
         ).fetchall()
         if results:
             return [
-                {"email": row[0], "revenue_per_salesperson": row[1]} for row in results
+                {"email": row[1], "revenue_per_salesperson": row[2]} for row in results
             ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
@@ -174,10 +187,12 @@ async def get_revenue_per_salesperson(ano: int):
 @app.get("/sales_per_day/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_sales_per_day(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  sales_per_day WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  sales_per_day WHERE year = {ano}")
+        ).fetchall()
         if results:
             return [
-                {"sales_date": str(row[0]), "sales_per_day": row[1]} for row in results
+                {"sales_date": str(row[0]), "sales_per_day": row[2]} for row in results
             ]
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
@@ -187,13 +202,15 @@ async def get_sales_per_day(ano: int):
 @app.get("/sales_per_month/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_sales_per_month(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  sales_per_month WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  sales_per_month WHERE year = {ano}")
+        ).fetchall()
         if results:
             return [
                 {"sales_year": row[0], "sales_month": row[1], "sales_per_month": row[2]}
                 for row in results
             ]
-                    
+
         else:
             raise HTTPException(status_code=404, detail="KPI não encontrada")
 
@@ -202,7 +219,9 @@ async def get_sales_per_month(ano: int):
 @app.get("/sales_per_year/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_sales_per_year(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  sales_per_year WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  sales_per_year WHERE sales_year = {ano}")
+        ).fetchall()
         if results:
             return [{"sales_year": row[0], "sales_per_year": row[1]} for row in results]
         else:
@@ -213,10 +232,12 @@ async def get_sales_per_year(ano: int):
 @app.get("/revenue_per_day/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_revenue_per_day(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  revenue_per_day WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  revenue_per_day WHERE year = {ano}")
+        ).fetchall()
         if results:
             return [
-                {"revenue_date": str(row[0]), "revenue_per_day": row[1]}
+                {"revenue_date": str(row[1]), "revenue_per_day": row[2]}
                 for row in results
             ]
         else:
@@ -227,10 +248,16 @@ async def get_revenue_per_day(ano: int):
 @app.get("/revenue_per_month/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_revenue_per_month(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  revenue_per_month WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  revenue_per_month WHERE year = {ano}")
+        ).fetchall()
         if results:
             return [
-                {"revenue_year": row[0], "revenue_month": row[1], "revenue_per_month": row[2]}
+                {
+                    "revenue_year": row[0],
+                    "revenue_month": row[1],
+                    "revenue_per_month": row[2],
+                }
                 for row in results
             ]
         else:
@@ -241,7 +268,9 @@ async def get_revenue_per_month(ano: int):
 @app.get("/revenue_per_year/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_revenue_per_year(ano: int):
     with engine.connect() as conn:
-        results = conn.execute(text(f"SELECT * FROM  revenue_per_year WHERE EXTRACT(YEAR FROM data) = {ano}")).fetchall()
+        results = conn.execute(
+            text(f"SELECT * FROM  revenue_per_year WHERE revenue_year = {ano}")
+        ).fetchall()
         if results:
             return [
                 {"revenue_year": row[0], "revenue_per_year": row[1]} for row in results
