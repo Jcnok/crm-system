@@ -11,5 +11,3 @@ FROM
     "crmdatabase_92cf"."public"."silver_vendas"
 GROUP BY
     year, email
-ORDER BY
-    revenue_per_salesperson DESC
