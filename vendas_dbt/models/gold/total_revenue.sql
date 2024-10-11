@@ -4,7 +4,9 @@
 -- Calcula a soma do valor total de todas as vendas em um ano específico.
 
 SELECT
+    EXTRACT(YEAR FROM data) AS year,
     SUM(valor) AS total_revenue
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
+GROUP BY
+    year
