@@ -5,12 +5,12 @@
 
 SELECT
     email,
+    EXTRACT(YEAR FROM data) AS year,
     SUM(valor) AS salesperson_total_revenue
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}    
 GROUP BY
-    email
+    year,email
 ORDER BY
     salesperson_total_revenue DESC
 LIMIT 3

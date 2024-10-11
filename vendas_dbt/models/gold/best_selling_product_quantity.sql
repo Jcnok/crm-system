@@ -5,12 +5,12 @@
 
 SELECT
     produto,
+    EXTRACT(YEAR FROM data) AS year,
     SUM(quantidade) AS total_product_quantity
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
 GROUP BY
-    produto
+   year,produto
 ORDER BY
     total_product_quantity DESC
 LIMIT 1

@@ -5,11 +5,11 @@
 
 SELECT
     DATE(data) AS sales_date,
+    EXTRACT(YEAR FROM data) AS year,
     COUNT(*) AS sales_per_day
 FROM
     {{ ref('silver_vendas') }}
-WHERE EXTRACT(YEAR FROM data) = {{ var('ano', default=2024) }}
 GROUP BY
-    sales_date
+    year, sales_date
 ORDER BY
     sales_date ASC
