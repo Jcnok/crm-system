@@ -69,28 +69,6 @@ models:
         description: 'Valor total da receita do produto.'
         tests:
           - not_null
-  - name: top3_salesperson_value
-    description: 'KPI: Top 3 Vendedores com Mais Vendas (em Valor) (por Ano) - Encontra os três vendedores que gerou o maior valor de vendas em um ano específico.'
-    columns:
-      - name: email
-        description: 'Email do vendedor que mais vendeu em valor.'
-        tests:
-          - not_null
-      - name: salesperson_total_revenue
-        description: 'Valor total das vendas do vendedor.'
-        tests:
-          - not_null
-  - name: top3_salesperson_quantity
-    description: 'KPI: top3 Vendedores com Mais Vendas (em Quantidade) (por Ano) - Encontra os três vendedores com maior número de vendas em um ano específico.'
-    columns:
-      - name: email
-        description: 'Email do vendedor que mais vendeu em quantidade.'
-        tests:
-          - not_null
-      - name: salesperson_total_sales
-        description: 'Quantidade total de vendas do vendedor.'
-        tests:
-          - not_null
   - name: sales_per_salesperson
     description: 'KPI: Número de Vendas por Vendedor (por Ano) - Calcula a quantidade de vendas realizadas por cada vendedor em um ano específico.'
     columns:
