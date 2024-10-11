@@ -8,6 +8,5 @@ SELECT
     COUNT(*) AS sales_per_year
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
 GROUP BY
     sales_year

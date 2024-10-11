@@ -5,9 +5,9 @@
 
 SELECT
     produto,
+    EXTRACT(YEAR FROM data) AS year,
     SUM(valor) AS product_revenue
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
 GROUP BY
-    produto
+    year,produto

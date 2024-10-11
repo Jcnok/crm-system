@@ -5,11 +5,11 @@
 
 SELECT
     DATE(data) AS sales_date,
+    EXTRACT(YEAR FROM data) AS year,
     COUNT(*) AS sales_per_day
 FROM
     "crmdatabase_92cf"."public"."silver_vendas"
-WHERE EXTRACT(YEAR FROM data) = 2024
 GROUP BY
-    sales_date
+    year, sales_date
 ORDER BY
     sales_date ASC
