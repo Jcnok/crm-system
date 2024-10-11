@@ -307,7 +307,7 @@ def render_dashboard():
 
     # Vendas por Ano
     st.header("Vendas por Ano")
-    sales_per_year = obter_dados_api(f"sales_per_year/{ano_selecionado}")
+    sales_per_year = obter_dados_api(f"sales_per_year")
     sales_per_year_df = pd.DataFrame(sales_per_year)
     fig_bar_year = px.bar(
         sales_per_year_df,
@@ -346,7 +346,7 @@ def render_dashboard():
 
     # Faturamento por Ano
     st.header("Faturamento por Ano")
-    revenue_per_year = obter_dados_api(f"revenue_per_year/{ano_selecionado}")
+    revenue_per_year = obter_dados_api(f"revenue_per_year")
     revenue_per_year_df = pd.DataFrame(revenue_per_year)
     fig_bar_revenue_year = px.bar(
         revenue_per_year_df,
