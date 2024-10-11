@@ -7,9 +7,9 @@
 
 ## Sobre
 
-O CRM System é uma solução completa para análise de dados de vendas, utilizando uma combinação poderosa de tecnologias para oferecer insights acionáveis e um sistema interativo para gerenciamento de informações. 
+O CRM System é uma solução para análise de dados de vendas, utilizando uma combinação poderosa de tecnologias para oferecer insights acionáveis e um sistema interativo para gerenciamento de informações. 
 
-O projeto integra:
+Este projeto integra:
 
 - **Streamlit:** Interface web interativa com dashboards visuais, gráficos Plotly e um sistema de entrada de dados intuitivo.
 - **LangChain:**  Permite que o usuário faça consultas em linguagem natural ao banco de dados, utilizando o modelo de linguagem Gemini-1.5-flash do Google AI.
@@ -106,19 +106,33 @@ crm-system
 
 ## Requisitos
 
-- **Python:** 3.12 (ou versão compatível).
-- **Poetry:** Gerenciador de dependências e ambientes virtuais.
-- **PostgreSQL:** Banco de dados relacional (instalação orientada abaixo).
-- **Psycopg2:** Conector Python para PostgreSQL.
-- **Streamlit:** Framework para criação de interfaces web interativas.
-- **Pydantic:** Validação de dados.
-- **Faker:** Geração de dados fictícios.
-- **Pandas:** Manipulação de dados.
-- **Pytest:** Framework de testes.
-- **Pre-commit:** Ferramentas para formatação e linting de código.
-- **Isort:** Formatador de imports.
-- **Black:** Formatador de código.
-- **Flake8:** Validador de estilo de código.
+**Linguagens e Frameworks:**
+
+- Python 3.12 (ou versão compatível)
+- Streamlit
+- FastAPI
+- LangChain
+- DBT
+
+**Banco de Dados:**
+
+- PostgreSQL
+- Psycopg2 (Conector Python para PostgreSQL)
+
+**Ferramentas de Desenvolvimento:**
+
+- Poetry (Gerenciador de dependências)
+- Pytest (Framework de testes)
+- Pre-commit (Ferramentas para formatação e linting de código)
+- Black (Formatador de código)
+- Flake8 (Validador de estilo de código)
+- Isort (Formatador de imports)
+
+**Bibliotecas Python:**
+
+- Pydantic (Validação de dados)
+- Faker (Geração de dados fictícios)
+- Pandas (Manipulação de dados)
 
 **Instalação do PostgreSQL:**
 
