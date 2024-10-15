@@ -32,14 +32,12 @@ DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
 DB_USER = os.getenv("DB_USER")
 DB_PASS = os.getenv("DB_PASS")
-google_api_key = os.getenv("GOOGLE_API_KEY")
-
 
 # Configuração da página
 st.set_page_config(page_title="CRM System", layout="wide")
 
 # Variável para armazenar a chave da API (inicialmente None)
-# google_api_key = None
+google_api_key = None
 
 def home():
     # Define a capa do projeto
@@ -49,13 +47,13 @@ def home():
     st.image(
         "https://github.com/Jcnok/crm-system/blob/master/img/diagrama.gif?raw=true",
         width=800,
-    ) 
+    )  # Adiciona o logo do Streamlit
 
     st.markdown("---")
 
     st.markdown(
         """
-      Este projeto demonstra um sistema de CRM (Customer Relationship Management) construído com Python e o Streamlit, utilizando LangChain para a integração com o Google Gemini. Você pode inserir dados de vendas manualmente, importar dados de um arquivo CSV, consultar o banco de dados com com linguagem natural e visualizar indicadores(KPIs) de forma interativa.
+      Este projeto demonstra um sistema de CRM (Customer Relationship Management) construído com Python e o Streamlit, utilizando LangChain para a integração com o Google AI. Você pode inserir dados de vendas manualmente, importar dados de um arquivo CSV, consultar o banco de dados com a LangChain e visualizar indicadores chave de desempenho (KPIs) de forma interativa.
       """
     )
 
@@ -73,36 +71,22 @@ def home():
 
       **Inteligência Artificial:**
       - LangChain: Framework para a integração com LLMs (Large Language Models).
-      - Google Gemini: Modelo LLM escolhido para o projeto.
+      - Google AI: Modelo de linguagem de ponta.
       """
     )
 
     st.markdown("## Usabilidade")
 
-    st.markdown("- **Entrada de Dados:** Inserir dados de vendas manualmente.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/insert.gif?raw=true", width=1000,) 
+    st.markdown(
+        """
+      - **Entrada de Dados:** Insira dados de vendas manualmente ou importe dados de um arquivo CSV.
+      - **Dashboard Interativo:** Visualize KPIs de vendas em gráficos interativos.
+      - **Consulta com LangChain:** Faça perguntas em linguagem natural e obtenha respostas de consultas SQL.
+      """
+    )
+
     st.markdown("---")
 
-    st.markdown("- **Entrada de Dados:** Inserir dados de um arquivo CSV.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/insert_lot.gif?raw=true", width=1000,) 
-    st.markdown("---")
-
-    st.markdown("- **Dashboard Interativo:** Visualize KPIs de vendas em gráficos interativos.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/dash.gif?raw=true", width=1000,) 
-    st.markdown("---")
-
-    st.markdown("- **Consulta com LangChain:** Faça perguntas em linguagem natural e obtenha respostas de consultas SQL.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/chat_sql.gif?raw=true", width=1000,) 
-    st.markdown("---")
-    
-    st.markdown("- **Documentação:** Visualize a documentação do projeto criada com mkdocs.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/docs.gif?raw=true", width=1000,) 
-    st.markdown("---")
-
-    st.markdown("- **Apagar Dados:** Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/delete.gif?raw=true", width=1000,) 
-    st.markdown("---")   
-  
 
 # Função para renderizar o formulário de entrada de dados
 def render_data_entry():
@@ -377,17 +361,17 @@ def render_dashboard():
 # Função para consulta sql por Chat com langchain;
 def st_llm():
     # Verifica se a chave da API foi inserida
-    # global google_api_key  # Declara a variável global para modificá-la dentro da função
-    #if google_api_key is None:
-    #    google_api_key = st.text_input(
-    #        "Insira sua chave da API do Google AI:", type="password"
-    #    )
-    #    st.markdown(
-    #        "Para criar uma chave da API do Google Gemini, siga as instruções: [Criar uma Chave API do Google Gemini](https://aistudio.google.com/app/apikey)"
-    #    )
-    #    if not google_api_key:
-    #        st.error("É necessário inserir a chave da API para utilizar o Chat SQL.")
-    #        return
+    global google_api_key  # Declara a variável global para modificá-la dentro da função
+    if google_api_key is None:
+        google_api_key = st.text_input(
+            "Insira sua chave da API do Google AI:", type="password"
+        )
+        st.markdown(
+            "Para criar uma chave da API do Google Gemini, siga as instruções: [Criar uma Chave API do Google Gemini](https://aistudio.google.com/app/apikey)"
+        )
+        if not google_api_key:
+            st.error("É necessário inserir a chave da API para utilizar o Chat SQL.")
+            return
 
     # Cria a instância do LLM (ChatGoogleGenerativeAI)
     llm = ChatGoogleGenerativeAI(
@@ -400,88 +384,18 @@ def st_llm():
     )
 
     # Cria o toolkit do agente SQL
-    #toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+    toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
     # Cria o agente baseado em SQL
     agent_executor = create_sql_agent(
         llm=llm,
-        #toolkit=toolkit,
-        db=db,
+        toolkit=toolkit,
         verbose=True,
-        agent_type='tool-calling',
+        agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
     )
 
     # Streamlit
     st.title("Chat SQL com LangChain")
-
-    # Exibe um exemplo da estrutura da tabela 'vendas'
-    st.subheader("Exemplo da Estrutura da Tabela 'vendas':")
-    st.table(
-        pd.DataFrame(
-            {
-                "id": [1, 2, 3, 4, 5],
-                "email": [
-                    "vendedor3@email.com",
-                    "vendedor3@email.com",
-                    "vendedor1@email.com",
-                    "vendedor2@email.com",
-                    "vendedor1@email.com",
-                    ],
-                "data": [
-                    "2024-01-10 10:00:00",
-                    "2024-01-10 11:30:00",
-                    "2024-01-15 14:00:00",
-                    "2024-01-16 16:30:00",
-                    "2024-01-17 18:00:00",
-                ],
-                "valor": [350, 499, 899, 350, 499],
-                "quantidade": [20, 10, 30, 10, 20],
-                "produto": [
-                    "Product A",
-                    "Product B",
-                    "Product C",
-                    "Product A",
-                    "Product B",
-                ],
-            }
-        )
-    )
-
-    # Seção informativa sobre o Chat SQL
-    st.markdown(
-        """
-    ## Explore seus Dados com Linguagem Natural!
-
-    Nesta seção, você pode fazer **qualquer pergunta** relacionada aos dados de venda armazenados na tabela `vendas`. 
-    
-    **Imagine:** 
-    - Deseja saber o faturamento total de um produto específico? 
-    - Quer descobrir a quantidade de vendas realizadas por um vendedor em um determinado período? 
-    - Precisa identificar os produtos mais vendidos em quantidade ou valor?
-
-    **Basta digitar sua pergunta em português, de forma natural, que o sistema se encarregará de traduzi-la em uma consulta SQL e buscar a resposta diretamente no banco de dados.**
-
-    Para facilitar, você pode se basear na estrutura da tabela `vendas` exibida acima. 
-    
-    **Não tem certeza por onde começar?** Sem problemas! Explore os exemplos de perguntas abaixo e compare os resultados com as informações do Dashboard.
-    """
-    )
-
-    # Exibe exemplos de perguntas para o usuário
-    st.subheader("Exemplos de Perguntas:")
-    st.markdown(
-        """
-    - Qual o total de receita por produto em 2024?
-    - Qual o total de vendas por vendedor em 2024?    
-    - Qual o  produto mais vendidos em quantidade e valor no ano atual?
-    - Qual o ticket médio das vendas em 2024?
-    - Qual o ticket médio de vendas realizadas em Janeiro de 2024?
-    """
-    )
-
-    # Armazena as últimas 5 consultas do usuário (temporariamente durante a sessão)
-    if "ultimas_consultas" not in st.session_state:
-        st.session_state.ultimas_consultas = []
 
     user_input = st.text_input("Digite sua pergunta sobre o banco de dados:")
 
@@ -489,41 +403,16 @@ def st_llm():
         with st.spinner("Executando a consulta..."):
             try:
                 response = agent_executor.run(user_input)
-                st.write(response)
-
-                # Armazena a consulta e a resposta
-                st.session_state.ultimas_consultas.append(
-                    {"pergunta": user_input, "resposta": response}
-                )
-
-                # Mantém apenas as últimas 5 consultas
-                if len(st.session_state.ultimas_consultas) > 5:
-                    st.session_state.ultimas_consultas.pop(0)
-
+                st.success(f"Resposta: {response}")
             except Exception as e:
                 st.error(f"Erro ao executar a consulta: {e}")
 
-    # Exibe o histórico de consultas (se houver)
-    if st.session_state.ultimas_consultas:
-        st.subheader("Histórico de Consultas:")
-        for consulta in st.session_state.ultimas_consultas:
-            st.write(f"**Pergunta:** {consulta['pergunta']}")
-            st.write(f"**Resposta:** {consulta['resposta']}")
-            st.markdown("---")
-
-def documention():
-    doc_url = "https://jcnok.github.io/crm-system/"
-    st.markdown(
-        f'<iframe src="{doc_url}" width="100%" height="800px"></iframe>',
-        unsafe_allow_html=True
-    )
-       
 
 # Função principal
 def main():
     st.sidebar.title("Navegação")
     page = st.sidebar.radio(
-        "Ir para", ["Home", "Entrada de Dados", "Dashboard", "Chat SQL", "Documentação", "Apagar Dados"]
+        "Ir para", ["Home", "Entrada de Dados", "Dashboard", "Chat SQL", "Apagar Dados"]
     )
     if page == "Home":
         home()
@@ -533,8 +422,6 @@ def main():
         render_dashboard()
     elif page == "Chat SQL":
         st_llm()
-    elif page == "Documentação":
-        documention()
     elif page == "Apagar Dados":
         del_database()
 
