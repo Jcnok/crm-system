@@ -77,6 +77,27 @@ def home():
       """
     )
 
+    # Seção de Contato e Agradecimento
+    st.markdown("---")
+    st.header("Curtiu o Projeto? 😊")
+    st.write(
+        "Se este projeto te ajudou ou te inspirou de alguma forma, me deixaria muito feliz se você pudesse dar uma olhada no repositório e deixar uma estrelinha ⭐. É rapidinho e me ajuda bastante! 😉"
+    )
+    st.markdown("[https://github.com/Jcnok/crm-system](https://github.com/Jcnok/crm-system)")
+
+    st.write(
+        "E se você tiver alguma dúvida, sugestão ou simplesmente quiser trocar uma ideia sobre o projeto, me chame no LinkedIn! Adoraria conectar! 😄"
+    )
+    st.markdown("[https://www.linkedin.com/in/juliookuda/](https://www.linkedin.com/in/juliookuda/)")
+
+    st.header("Open Source e Flexibilidade 🚀")
+    st.write(
+        "Uma das coisas que mais me motivou a criar este projeto foi a possibilidade de usar apenas ferramentas open source e gratuitas. Nada de sustos com a fatura do cartão de crédito no final do mês! 😅 (Quem nunca esqueceu um servidor ligado na AWS que atire a primeira pedra, rs... 💸)"
+    )
+    st.write(
+        "Além disso, a estrutura do projeto é totalmente flexível e pode ser facilmente migrada para outras clouds como AWS, Azure, GCP, etc. A escolha é sua! 😎"
+    )
+
     st.markdown("## Usabilidade")
 
     st.markdown("- **Entrada de Dados:** Inserir dados de vendas manualmente.")    
