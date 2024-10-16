@@ -320,14 +320,14 @@ def render_dashboard():
     st.header("Vendas por Dia")
     sales_per_day = obter_dados_api(f"sales_per_day/{ano_selecionado}")
     sales_per_day_df = pd.DataFrame(sales_per_day)
-    fig_bar_day = px.bar(
+    fig_line_day = px.line(
         sales_per_day_df,
         x="sales_date",
         y="sales_per_day",
         title="Vendas por Dia",
         labels={"sales_date": "Data", "sales_per_day": "Vendas"},
     )
-    st.plotly_chart(fig_bar_day, use_container_width=True)
+    st.plotly_chart(fig_line_day, use_container_width=True)
 
     # Vendas por Mês
     st.header("Vendas por Mês")
@@ -359,14 +359,14 @@ def render_dashboard():
     st.header("Faturamento por Dia")
     revenue_per_day = obter_dados_api(f"revenue_per_day/{ano_selecionado}")
     revenue_per_day_df = pd.DataFrame(revenue_per_day)
-    fig_bar_revenue_day = px.bar(
+    fig_line_revenue_day = px.line(
         revenue_per_day_df,
         x="revenue_date",
         y="revenue_per_day",
         title="Faturamento por Dia",
         labels={"revenue_date": "Data", "revenue_per_day": "Faturamento"},
     )
-    st.plotly_chart(fig_bar_revenue_day, use_container_width=True)
+    st.plotly_chart(fig_line_revenue_day, use_container_width=True)
 
     # Faturamento por Mês
     st.header("Faturamento por Mês")
