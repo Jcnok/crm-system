@@ -5,6 +5,7 @@ description = "Pipeline de dados completo para um CRM de vendas, utilizando ferr
 authors = ["Julio Okuda <julio.okuda@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
