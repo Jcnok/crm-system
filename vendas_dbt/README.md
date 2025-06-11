@@ -48,5 +48,5 @@ graph LR
 
 ### Conclusão
 
-O DBT transforma o processo de transformação de dados em uma experiência poderosa e eficiente. Com o DBT, engenheiros de dados podem construir pipelines de transformação robustos, testáveis e documentados, garantindo a qualidade e a confiabilidade dos dados. Os insights gerados pelo DBT podem ser utilizados para tomar decisões estratégicas, otimizar processos e impulsionar o crescimento do negócio.
+O DBT transforma o processo de transformação de dados em uma experiência poderosa e eficiente. Com o DBT, engenheiros de dados podem construir pipelines de transformação robustos, testáveis e documentados, garantindo a qualidade e a confiabilidade dos dados. Os insights gerados pelo DBT podem ser utilizados para tomar decisões estratégicas, otimizar processos e impulsionar o crescimento do negócio..
 
