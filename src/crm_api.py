@@ -26,9 +26,9 @@ app = FastAPI()
 async def get_total_revenue(ano: int):
     with engine.connect() as conn:
         stmt = text(
-            f"SELECT * FROM  total_revenue WHERE year = {ano}"
+            "SELECT * FROM  total_revenue WHERE year = :ano"
         )  # Usa a função text() para executar a consulta
-        result = conn.execute(stmt).fetchone()
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"total_revenue": result[1]}
         else:
@@ -39,8 +39,8 @@ async def get_total_revenue(ano: int):
 @app.get("/total_sales/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_total_sales(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM  total_sales WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM  total_sales WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"total_sales": result[1]}
         else:
@@ -51,8 +51,8 @@ async def get_total_sales(ano: int):
 @app.get("/average_sale_value/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_sale_value(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM average_sale_value WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM average_sale_value WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"average_sale_value": result[1]}
         else:
@@ -63,8 +63,8 @@ async def get_average_sale_value(ano: int):
 @app.get("/average_products_per_sale/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_products_per_sale(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM average_products_per_sale WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM average_products_per_sale WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"average_products_per_sale": result[1]}
         else:
@@ -75,8 +75,8 @@ async def get_average_products_per_sale(ano: int):
 @app.get("/average_ticket/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_average_ticket(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM average_ticket WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM average_ticket WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"average_ticket": result[1]}
         else:
@@ -87,8 +87,8 @@ async def get_average_ticket(ano: int):
 @app.get("/best_selling_product_value/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_best_selling_product_value(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM best_selling_product_value WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM best_selling_product_value WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"produto": result[0], "total_product_revenue": result[2]}
         else:
@@ -99,8 +99,8 @@ async def get_best_selling_product_value(ano: int):
 @app.get("/best_selling_product_quantity/{ano}")  # Adiciona o parâmetro 'ano'
 async def get_best_selling_product_quantity(ano: int):
     with engine.connect() as conn:
-        stmt = text(f"SELECT * FROM best_selling_product_quantity WHERE year = {ano}")
-        result = conn.execute(stmt).fetchone()
+        stmt = text("SELECT * FROM best_selling_product_quantity WHERE year = :ano")
+        result = conn.execute(stmt, {"ano": ano}).fetchone()
         if result:
             return {"produto": result[0], "total_product_quantity": result[2]}
         else:
@@ -112,7 +112,7 @@ async def get_best_selling_product_quantity(ano: int):
 async def get_product_revenue(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM product_revenue WHERE year = {ano}")
+            text("SELECT * FROM product_revenue WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [{"produto": row[0], "product_revenue": row[2]} for row in results]
@@ -125,9 +125,9 @@ async def get_product_revenue(ano: int):
 async def get_top3_salesperson_value(ano: int):
     with engine.connect() as conn:
         stmt = text(
-            f"SELECT * FROM revenue_per_salesperson WHERE year = {ano} Order by revenue_per_salesperson Desc LIMIT 3"
+            "SELECT * FROM revenue_per_salesperson WHERE year = :ano Order by revenue_per_salesperson Desc LIMIT 3"
         )
-        results = conn.execute(stmt).fetchall()
+        results = conn.execute(stmt, {"ano": ano}).fetchall()
         if results:
             return [
                 {"email": row[1], "salesperson_total_revenue": row[2]}
@@ -142,9 +142,9 @@ async def get_top3_salesperson_value(ano: int):
 async def get_top3_salesperson_quantity(ano: int):
     with engine.connect() as conn:
         stmt = text(
-            f"SELECT * FROM sales_per_salesperson WHERE year = {ano} Order by sales_per_salesperson Desc LIMIT 3"
+            "SELECT * FROM sales_per_salesperson WHERE year = :ano Order by sales_per_salesperson Desc LIMIT 3"
         )
-        results = conn.execute(stmt).fetchall()
+        results = conn.execute(stmt, {"ano": ano}).fetchall()
         if results:
             return [
                 {"email": row[0], "salesperson_total_sales": row[2]} for row in results
@@ -158,7 +158,7 @@ async def get_top3_salesperson_quantity(ano: int):
 async def get_sales_per_salesperson(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM sales_per_salesperson WHERE year = {ano}")
+            text("SELECT * FROM sales_per_salesperson WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -173,7 +173,7 @@ async def get_sales_per_salesperson(ano: int):
 async def get_revenue_per_salesperson(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM revenue_per_salesperson WHERE year = {ano}")
+            text("SELECT * FROM revenue_per_salesperson WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -188,7 +188,7 @@ async def get_revenue_per_salesperson(ano: int):
 async def get_sales_per_day(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  sales_per_day WHERE year = {ano}")
+            text("SELECT * FROM  sales_per_day WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -203,7 +203,7 @@ async def get_sales_per_day(ano: int):
 async def get_sales_per_month(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  sales_per_month WHERE year = {ano}")
+            text("SELECT * FROM  sales_per_month WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -220,7 +220,7 @@ async def get_sales_per_month(ano: int):
 async def get_sales_per_year(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  sales_per_year WHERE sales_year = {ano}")
+            text("SELECT * FROM  sales_per_year WHERE sales_year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [{"sales_year": row[0], "sales_per_year": row[1]} for row in results]
@@ -233,7 +233,7 @@ async def get_sales_per_year(ano: int):
 async def get_revenue_per_day(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  revenue_per_day WHERE year = {ano}")
+            text("SELECT * FROM  revenue_per_day WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -249,7 +249,7 @@ async def get_revenue_per_day(ano: int):
 async def get_revenue_per_month(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  revenue_per_month WHERE year = {ano}")
+            text("SELECT * FROM  revenue_per_month WHERE year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
@@ -269,7 +269,7 @@ async def get_revenue_per_month(ano: int):
 async def get_revenue_per_year(ano: int):
     with engine.connect() as conn:
         results = conn.execute(
-            text(f"SELECT * FROM  revenue_per_year WHERE revenue_year = {ano}")
+            text("SELECT * FROM  revenue_per_year WHERE revenue_year = :ano"), {"ano": ano}
         ).fetchall()
         if results:
             return [
