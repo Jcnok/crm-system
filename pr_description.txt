@@ -1,0 +1,38 @@
+Title: chore: parameterize SQL queries in src/crm_api.py to prevent SQL injection
+
+This PR replaces string-interpolated SQL queries in src/crm_api.py with SQLAlchemy text() queries
+that use bind parameters. Interpolating values directly into SQL (e.g., using f-strings) can lead to
+SQL injection vulnerabilities; using bind parameters separates SQL code from data and prevents that
+attack vector.
+
+Changes:
+- Replaced all occurrences of text(f"... {ano}") with parameterized queries using :ano and
+  passing {"ano": ano} to conn.execute.
+- Updated all endpoints in src/crm_api.py that filtered by year to use bind parameters.
+
+Why this is safe:
+- Bind parameters make the DB treat inputs as data, not SQL code. This prevents malicious inputs
+  from altering the query structure.
+
+Testing instructions:
+1. Checkout the branch fix/sql-parameterized-crm-api and run the API locally:
+   - git fetch origin fix/sql-parameterized-crm-api
+   - git checkout fix/sql-parameterized-crm-api
+   - pip install -r requirements.txt
+   - export DB_* env vars for a test Postgres instance
+   - uvicorn src.crm_api:app --reload --port 5000
+
+2. Call endpoints with normal and malicious-looking values for `ano` (e.g., "2026", "2026; DROP TABLE users;",
+   and payloads containing quotes) and confirm:
+   - No SQL syntax errors are raised due to interpolation
+   - DB is not altered by malicious inputs
+
+3. Run the test suite / CI to ensure no regressions.
+
+Notes:
+- This change assumes `ano` is an integer route parameter (FastAPI will validate it). Parametrization is
+  still important to prevent regressions and future unsafe changes.
+- If any queries need dynamic table/column names, validate them against a whitelist instead of using
+  bind parameters.
+
+If you want, I can open the PR from this branch to master with this description.
