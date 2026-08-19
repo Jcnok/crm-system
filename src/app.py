@@ -5,11 +5,9 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 from dotenv import load_dotenv
-from langchain.agents.agent_types import AgentType  # Import da classe AgentType
 from langchain_community.agent_toolkits.sql.base import (
     create_sql_agent,  # Import da função create_sql_agent
 )
-from langchain_community.agent_toolkits.sql.toolkit import SQLDatabaseToolkit
 from langchain_community.utilities import SQLDatabase  # Import da classe SQLDatabase
 from langchain_google_genai import (
     ChatGoogleGenerativeAI,  # Import da classe ChatGoogleGenerativeAI
@@ -41,6 +39,7 @@ st.set_page_config(page_title="CRM System", layout="wide")
 # Variável para armazenar a chave da API (inicialmente None)
 # google_api_key = None
 
+
 def home():
     # Define a capa do projeto
     st.title("CRM System")
@@ -49,7 +48,7 @@ def home():
     st.image(
         "https://github.com/Jcnok/crm-system/blob/master/img/diagrama.gif?raw=true",
         width=800,
-    ) 
+    )
 
     st.markdown("---")
 
@@ -83,12 +82,16 @@ def home():
     st.write(
         "Se este projeto te ajudou ou te inspirou de alguma forma, me deixaria muito feliz se você pudesse dar uma olhada no repositório e deixar uma estrelinha ⭐. É rapidinho e me ajuda bastante! 😉"
     )
-    st.markdown("[https://github.com/Jcnok/crm-system](https://github.com/Jcnok/crm-system)")
+    st.markdown(
+        "[https://github.com/Jcnok/crm-system](https://github.com/Jcnok/crm-system)"
+    )
 
     st.write(
         "E se você tiver alguma dúvida, sugestão ou simplesmente quiser trocar uma ideia sobre o projeto, me chame no LinkedIn! Adoraria conectar! 😄"
     )
-    st.markdown("[https://www.linkedin.com/in/juliookuda/](https://www.linkedin.com/in/juliookuda/)")
+    st.markdown(
+        "[https://www.linkedin.com/in/juliookuda/](https://www.linkedin.com/in/juliookuda/)"
+    )
 
     st.header("Open Source e Flexibilidade 🚀")
     st.write(
@@ -100,30 +103,56 @@ def home():
 
     st.markdown("## Usabilidade")
 
-    st.markdown("- **Entrada de Dados:** Inserir dados de vendas manualmente.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/insert.gif?raw=true", width=1000,) 
+    st.markdown("- **Entrada de Dados:** Inserir dados de vendas manualmente.")
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/insert.gif?raw=true",
+        width=1000,
+    )
     st.markdown("---")
 
-    st.markdown("- **Entrada de Dados:** Inserir dados de um arquivo CSV.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/insert_lot.gif?raw=true", width=1000,) 
+    st.markdown("- **Entrada de Dados:** Inserir dados de um arquivo CSV.")
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/insert_lot.gif?raw=true",
+        width=1000,
+    )
     st.markdown("---")
 
-    st.markdown("- **Dashboard Interativo:** Visualize KPIs de vendas em gráficos interativos.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/dash.gif?raw=true", width=1000,) 
+    st.markdown(
+        "- **Dashboard Interativo:** Visualize KPIs de vendas em gráficos interativos."
+    )
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/dash.gif?raw=true",
+        width=1000,
+    )
     st.markdown("---")
 
-    st.markdown("- **Consulta com LangChain:** Faça perguntas em linguagem natural e obtenha respostas de consultas SQL.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/chat_sql.gif?raw=true", width=1000,) 
-    st.markdown("---")
-    
-    st.markdown("- **Documentação:** Visualize a documentação do projeto criada com mkdocs.")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/docs.gif?raw=true", width=1000,) 
+    st.markdown(
+        "- **Consulta com LangChain:** Faça perguntas em linguagem natural e obtenha respostas de consultas SQL."
+    )
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/chat_sql.gif?raw=true",
+        width=1000,
+    )
     st.markdown("---")
 
-    st.markdown("- **Apagar Dados:** Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)")    
-    st.image("https://github.com/Jcnok/crm-system/blob/master/img/delete.gif?raw=true", width=1000,) 
-    st.markdown("---")   
-  
+    st.markdown(
+        "- **Documentação:** Visualize a documentação do projeto criada com mkdocs."
+    )
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/docs.gif?raw=true",
+        width=1000,
+    )
+    st.markdown("---")
+
+    st.markdown(
+        "- **Apagar Dados:** Apagar todos os dados do banco de dados! (Botão do Pânico 🚨)"
+    )
+    st.image(
+        "https://github.com/Jcnok/crm-system/blob/master/img/delete.gif?raw=true",
+        width=1000,
+    )
+    st.markdown("---")
+
 
 # Função para renderizar o formulário de entrada de dados
 def render_data_entry():
@@ -204,6 +233,7 @@ def render_data_entry():
         except Exception as e:
             st.error(f"Erro ao importar dados do CSV: {e}")
 
+
 # Função para apagar todo o banco de dados
 def del_database():
     # Botão para deletar todos os dados do banco de dados
@@ -263,7 +293,9 @@ def render_dashboard():
     )
     revenue_per_salesperson_df = pd.DataFrame(revenue_per_salesperson)
     fig_bar = px.bar(
-        revenue_per_salesperson_df.sort_values(by="revenue_per_salesperson", ascending=False),
+        revenue_per_salesperson_df.sort_values(
+            by="revenue_per_salesperson", ascending=False
+        ),
         x="email",
         y="revenue_per_salesperson",
         title="Faturamento por Vendedor",
@@ -277,7 +309,7 @@ def render_dashboard():
     # Obter os dados
     revenue_per_month = obter_dados_api(f"revenue_per_month/{ano_selecionado}")
     revenue_per_month_df = pd.DataFrame(revenue_per_month)
-    
+
     # Criar o gráfico de linha filtrado
     fig_line = px.line(
         revenue_per_month_df,
@@ -305,7 +337,9 @@ def render_dashboard():
 
     # Top 3 Vendedores (Quantidade)
     st.header("Top 3 Vendedores (Quantidade)")
-    top_salesperson_quantity = obter_dados_api(f"top3_salesperson_quantity/{ano_selecionado}")
+    top_salesperson_quantity = obter_dados_api(
+        f"top3_salesperson_quantity/{ano_selecionado}"
+    )
     top_salesperson_quantity_df = pd.DataFrame(top_salesperson_quantity)
     fig_bar_top_sales_quantity = px.bar(
         top_salesperson_quantity_df,
@@ -344,7 +378,7 @@ def render_dashboard():
 
     # Vendas por Ano
     st.header("Vendas por Ano")
-    sales_per_year = obter_dados_api(f"sales_per_year")
+    sales_per_year = obter_dados_api("sales_per_year")
     sales_per_year_df = pd.DataFrame(sales_per_year)
     fig_bar_year = px.bar(
         sales_per_year_df,
@@ -383,7 +417,7 @@ def render_dashboard():
 
     # Faturamento por Ano
     st.header("Faturamento por Ano")
-    revenue_per_year = obter_dados_api(f"revenue_per_year")
+    revenue_per_year = obter_dados_api("revenue_per_year")
     revenue_per_year_df = pd.DataFrame(revenue_per_year)
     fig_bar_revenue_year = px.bar(
         revenue_per_year_df,
@@ -399,7 +433,7 @@ def render_dashboard():
 def st_llm():
     # Verifica se a chave da API foi inserida
     # global google_api_key  # Declara a variável global para modificá-la dentro da função
-    #if google_api_key is None:
+    # if google_api_key is None:
     #    google_api_key = st.text_input(
     #        "Insira sua chave da API do Google AI:", type="password"
     #    )
@@ -421,15 +455,15 @@ def st_llm():
     )
 
     # Cria o toolkit do agente SQL
-    #toolkit = SQLDatabaseToolkit(db=db, llm=llm)
+    # toolkit = SQLDatabaseToolkit(db=db, llm=llm)
 
     # Cria o agente baseado em SQL
     agent_executor = create_sql_agent(
         llm=llm,
-        #toolkit=toolkit,
+        # toolkit=toolkit,
         db=db,
         verbose=True,
-        agent_type='tool-calling',
+        agent_type="tool-calling",
     )
 
     # Streamlit
@@ -447,7 +481,7 @@ def st_llm():
                     "vendedor1@email.com",
                     "vendedor2@email.com",
                     "vendedor1@email.com",
-                    ],
+                ],
                 "data": [
                     "2024-01-10 10:00:00",
                     "2024-01-10 11:30:00",
@@ -473,17 +507,17 @@ def st_llm():
         """
     ## Explore seus Dados com Linguagem Natural!
 
-    Nesta seção, você pode fazer **qualquer pergunta** relacionada aos dados de venda armazenados na tabela `vendas`. 
-    
-    **Imagine:** 
-    - Deseja saber o faturamento total de um produto específico? 
-    - Quer descobrir a quantidade de vendas realizadas por um vendedor em um determinado período? 
+    Nesta seção, você pode fazer **qualquer pergunta** relacionada aos dados de venda armazenados na tabela `vendas`.
+
+    **Imagine:**
+    - Deseja saber o faturamento total de um produto específico?
+    - Quer descobrir a quantidade de vendas realizadas por um vendedor em um determinado período?
     - Precisa identificar os produtos mais vendidos em quantidade ou valor?
 
     **Basta digitar sua pergunta em português, de forma natural, que o sistema se encarregará de traduzi-la em uma consulta SQL e buscar a resposta diretamente no banco de dados.**
 
-    Para facilitar, você pode se basear na estrutura da tabela `vendas` exibida acima. 
-    
+    Para facilitar, você pode se basear na estrutura da tabela `vendas` exibida acima.
+
     **Não tem certeza por onde começar?** Sem problemas! Explore os exemplos de perguntas abaixo e compare os resultados com as informações do Dashboard.
     """
     )
@@ -493,7 +527,7 @@ def st_llm():
     st.markdown(
         """
     - Qual o total de receita por produto em 2024?
-    - Qual o total de vendas por vendedor em 2024?    
+    - Qual o total de vendas por vendedor em 2024?
     - Qual o  produto mais vendidos em quantidade e valor no ano atual?
     - Qual o ticket médio das vendas em 2024?
     - Qual o ticket médio de vendas realizadas em Janeiro de 2024?
@@ -532,19 +566,28 @@ def st_llm():
             st.write(f"**Resposta:** {consulta['resposta']}")
             st.markdown("---")
 
+
 def documention():
     doc_url = "https://jcnok.github.io/crm-system/"
     st.markdown(
         f'<iframe src="{doc_url}" width="100%" height="800px"></iframe>',
-        unsafe_allow_html=True
+        unsafe_allow_html=True,
     )
-       
+
 
 # Função principal
 def main():
     st.sidebar.title("Navegação")
     page = st.sidebar.radio(
-        "Ir para", ["Home", "Entrada de Dados", "Dashboard", "Chat SQL", "Documentação", "Apagar Dados"]
+        "Ir para",
+        [
+            "Home",
+            "Entrada de Dados",
+            "Dashboard",
+            "Chat SQL",
+            "Documentação",
+            "Apagar Dados",
+        ],
     )
     if page == "Home":
         home()

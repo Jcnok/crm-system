@@ -39,6 +39,7 @@ st.set_page_config(page_title="CRM System", layout="wide")
 # Variável para armazenar a chave da API (inicialmente None)
 google_api_key = None
 
+
 def home():
     # Define a capa do projeto
     st.title("CRM System")
@@ -167,6 +168,7 @@ def render_data_entry():
         except Exception as e:
             st.error(f"Erro ao importar dados do CSV: {e}")
 
+
 # Função para apagar todo o banco de dados
 def del_database():
     # Botão para deletar todos os dados do banco de dados
@@ -226,7 +228,9 @@ def render_dashboard():
     )
     revenue_per_salesperson_df = pd.DataFrame(revenue_per_salesperson)
     fig_bar = px.bar(
-        revenue_per_salesperson_df.sort_values(by="revenue_per_salesperson", ascending=False),
+        revenue_per_salesperson_df.sort_values(
+            by="revenue_per_salesperson", ascending=False
+        ),
         x="email",
         y="revenue_per_salesperson",
         title="Faturamento por Vendedor",
@@ -240,7 +244,7 @@ def render_dashboard():
     # Obter os dados
     revenue_per_month = obter_dados_api(f"revenue_per_month/{ano_selecionado}")
     revenue_per_month_df = pd.DataFrame(revenue_per_month)
-    
+
     # Criar o gráfico de linha filtrado
     fig_line = px.line(
         revenue_per_month_df,
@@ -268,7 +272,9 @@ def render_dashboard():
 
     # Top 3 Vendedores (Quantidade)
     st.header("Top 3 Vendedores (Quantidade)")
-    top_salesperson_quantity = obter_dados_api(f"top3_salesperson_quantity/{ano_selecionado}")
+    top_salesperson_quantity = obter_dados_api(
+        f"top3_salesperson_quantity/{ano_selecionado}"
+    )
     top_salesperson_quantity_df = pd.DataFrame(top_salesperson_quantity)
     fig_bar_top_sales_quantity = px.bar(
         top_salesperson_quantity_df,
@@ -307,7 +313,7 @@ def render_dashboard():
 
     # Vendas por Ano
     st.header("Vendas por Ano")
-    sales_per_year = obter_dados_api(f"sales_per_year")
+    sales_per_year = obter_dados_api("sales_per_year")
     sales_per_year_df = pd.DataFrame(sales_per_year)
     fig_bar_year = px.bar(
         sales_per_year_df,
@@ -346,7 +352,7 @@ def render_dashboard():
 
     # Faturamento por Ano
     st.header("Faturamento por Ano")
-    revenue_per_year = obter_dados_api(f"revenue_per_year")
+    revenue_per_year = obter_dados_api("revenue_per_year")
     revenue_per_year_df = pd.DataFrame(revenue_per_year)
     fig_bar_revenue_year = px.bar(
         revenue_per_year_df,
